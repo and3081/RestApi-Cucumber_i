@@ -33,7 +33,7 @@ public class Tests extends ApiBase {
     }
 
     @DisplayName("Тест Проверка json")
-    @ParameterizedTest()
+    @ParameterizedTest(name = "{displayName}")
     @MethodSource("ru.vasyukov.data.TestParams#providerTest2")
     public void TestJson(String filename) {
         Assertions.assertTrue(createJsonFile(filename), "Файл " + filename + " не создан");
@@ -41,10 +41,6 @@ public class Tests extends ApiBase {
         JSONObject jsonResponse = createUser(jsonRequest);
         jsonRequest.put("id", jsonResponse.optString("id", "нет"));
         jsonRequest.put("createdAt", jsonResponse.optString("createdAt", "нет"));
-        if (!jsonRequest.similar(jsonResponse)) {
-            System.out.println("ОР: " + jsonRequest);
-            System.out.println("ФР: " + jsonResponse);
-            Assertions.fail("Json ответа не соответствует ожидаемому");
-        }
+        Assertions.assertTrue(jsonRequest.similar(jsonResponse), "Json ответа не соответствует ожидаемому");
     }
 }
