@@ -1,11 +1,16 @@
 package ru.vasyukov.apiBase;
 
 import io.qameta.allure.Step;
+import org.json.JSONObject;
 import ru.vasyukov.data.Episode;
 import ru.vasyukov.data.ListPers;
 import ru.vasyukov.data.Person;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static io.restassured.RestAssured.given;
@@ -68,5 +73,18 @@ public class ApiBase {
     public static Person getLastPerson(Episode episode) {
         String lastPerson = episode.getCharacters().get(episode.getCharacters().size() - 1);
         return getPerson(0 , lastPerson);
+    }
+
+    @Step("")
+    public static boolean createJsonFile(String filename) {
+        JSONObject json = new JSONObject();
+        json.put("name", "Potato");
+        try(FileWriter file = new FileWriter("src/test/resources/" + filename + ".json")) {
+            file.write(json.toString(2));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 }
