@@ -9,9 +9,9 @@ import ru.vasyukov.properties.TestData;
 import static org.hamcrest.Matchers.*;
 
 public class Specification {
-    public static RequestSpecification requestSpec() {
+    public static RequestSpecification requestSpecRick() {
         return new RequestSpecBuilder()
-                .setBaseUri(TestData.props.baseUrl())
+                .setBaseUri(TestData.props.baseUrlRickandmortyapi())
                 .setContentType("application/json;charset=UTF-8")
                 .build();
     }
@@ -44,6 +44,23 @@ public class Specification {
                 .expectBody("name", notNullValue())
                 .expectBody("characters", notNullValue())
                 .expectBody("characters", not(emptyArray()))
+                .build();
+    }
+
+    public static RequestSpecification requestSpecReqres() {
+        return new RequestSpecBuilder()
+                .setBaseUri(TestData.props.baseUrlReqres())
+                .setContentType("application/json;charset=UTF-8")
+                .build();
+    }
+
+    public static ResponseSpecification responseSpecCreate(){
+        return new ResponseSpecBuilder()
+                .expectStatusCode(201)
+                .expectBody("name", notNullValue())
+                .expectBody("job", notNullValue())
+                .expectBody("id", notNullValue())
+                .expectBody("createdAt", notNullValue())
                 .build();
     }
 }

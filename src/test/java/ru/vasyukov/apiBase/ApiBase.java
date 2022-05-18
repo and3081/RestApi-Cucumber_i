@@ -10,9 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import static io.restassured.RestAssured.given;
@@ -28,7 +26,7 @@ public class ApiBase {
             numberPage++;
             //System.out.printf("с.%d..\n", numberPage);
             listPers= given()
-                    .spec(requestSpec())
+                    .spec(requestSpecRick())
                     .queryParam("page", numberPage)
                     .when()
                     .get("api/character")
@@ -49,7 +47,7 @@ public class ApiBase {
     @Step("Поиск персонажа по ID {idPers} или url {url}")
     public static Person getPerson(int idPers, String url) {
         return given()
-                .spec(requestSpec())
+                .spec(requestSpecRick())
                 .when()
                 .get(url==null || url.isEmpty() ? "api/character/" + idPers : url)
                 .then()
@@ -62,7 +60,7 @@ public class ApiBase {
     public static Episode getLastEpisode(Person person) {
         String lastEpisode = person.getEpisode().get(person.getEpisode().size()-1);
         return given()
-                .spec(requestSpec())
+                .spec(requestSpecRick())
                 .when()
                 .get(lastEpisode)
                 .then()
@@ -77,7 +75,7 @@ public class ApiBase {
         return getPerson(0 , lastPerson);
     }
 
-    @Step("")
+    @Step("Создание файла Json для запроса {filename}")
     public static boolean createJsonFile(String filename) {
         JSONObject json = new JSONObject();
         json.put("name", "Potato");
@@ -99,12 +97,25 @@ public class ApiBase {
         }
     }
 
-    @Step("")
-    public static String bodyJson(String filename) {
+    @Step("Формирование тела запроса из файла Json {filename}")
+    public static JSONObject bodyJson(String filename) {
         JSONObject json = readJsonFile(filename);
         assert json != null;
         json.put("name", "Tomato");
         json.put("job", "Eat maket");
-        return json.toString();
+        return json;
+    }
+
+    @Step("Создание юзера {body}")
+    public static JSONObject createUser(JSONObject body) {
+        return new JSONObject(given()
+                .spec(requestSpecReqres())
+                .body(body.toString())
+                .when()
+                .post("api/users")
+                .then()
+                .spec(responseSpecCreate())
+                //.log().body()
+                .extract().body().asString());
     }
 }
