@@ -1,7 +1,5 @@
 package ru.vasyukov.data;
 
-import org.json.JSONPropertyIgnore;
-
 import java.util.List;
 import java.util.Map;
 

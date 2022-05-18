@@ -25,4 +25,25 @@ public class Specification {
                 .expectBody("results.name", not(hasItem(nullValue())))
                 .build();
     }
+
+    public static ResponseSpecification responseSpecPerson(){
+        return new ResponseSpecBuilder()
+                .expectStatusCode(200)
+                .expectBody("name", notNullValue())
+                .expectBody("species", notNullValue())
+                .expectBody("location", notNullValue())
+                .expectBody("location.name", notNullValue())
+                .expectBody("episode", notNullValue())
+                .expectBody("episode", not(emptyArray()))
+                .build();
+    }
+
+    public static ResponseSpecification responseSpecEpisode(){
+        return new ResponseSpecBuilder()
+                .expectStatusCode(200)
+                .expectBody("name", notNullValue())
+                .expectBody("characters", notNullValue())
+                .expectBody("characters", not(emptyArray()))
+                .build();
+    }
 }

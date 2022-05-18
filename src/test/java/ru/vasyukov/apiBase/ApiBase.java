@@ -1,6 +1,9 @@
 package ru.vasyukov.apiBase;
 
+import io.qameta.allure.Step;
+import ru.vasyukov.data.Episode;
 import ru.vasyukov.data.ListPers;
+import ru.vasyukov.data.Person;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -9,11 +12,14 @@ import static io.restassured.RestAssured.given;
 import static ru.vasyukov.specifications.Specification.*;
 
 public class ApiBase {
-    public static Integer findPersIdForName(String namePers) {
+
+    @Step("Поиск ID персонажа по его имени {namePers}")
+    public static Integer findPersonIdForName(String namePers) {
         ListPers listPers;
         int numberPage = 0;
         do {
             numberPage++;
+            //System.out.printf("с.%d..\n", numberPage);
             listPers= given()
                     .spec(requestSpec())
                     .queryParam("page", numberPage)
@@ -33,12 +39,34 @@ public class ApiBase {
         return null;
     }
 
-    public static void getPers() {
-        Object q= given()
+    @Step("Поиск персонажа по ID {idPers} или url {url}")
+    public static Person getPerson(int idPers, String url) {
+        return given()
                 .spec(requestSpec())
                 .when()
-                .get("api/character")
+                .get(url==null || url.isEmpty() ? "api/character/" + idPers : url)
                 .then()
-                .log().body();
+                .spec(responseSpecPerson())
+                //.log().body()
+                .extract().body().as(Person.class);
+    }
+
+    @Step("Поиск последнего эпизода у персонажа {person.name}")
+    public static Episode getLastEpisode(Person person) {
+        String lastEpisode = person.getEpisode().get(person.getEpisode().size()-1);
+        return given()
+                .spec(requestSpec())
+                .when()
+                .get(lastEpisode)
+                .then()
+                .spec(responseSpecEpisode())
+                //.log().body()
+                .extract().body().as(Episode.class);
+    }
+
+    @Step("Поиск последнего персонажа у эпизода {episode.name}")
+    public static Person getLastPerson(Episode episode) {
+        String lastPerson = episode.getCharacters().get(episode.getCharacters().size() - 1);
+        return getPerson(0 , lastPerson);
     }
 }
