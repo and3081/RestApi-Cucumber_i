@@ -8,6 +8,8 @@ import ru.vasyukov.data.Person;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -79,12 +81,30 @@ public class ApiBase {
     public static boolean createJsonFile(String filename) {
         JSONObject json = new JSONObject();
         json.put("name", "Potato");
-        try(FileWriter file = new FileWriter("src/test/resources/" + filename + ".json")) {
+        try(FileWriter file = new FileWriter(filename)) {
             file.write(json.toString(2));
         } catch (IOException e) {
             e.printStackTrace();
             return false;
         }
         return true;
+    }
+
+    public static JSONObject readJsonFile(String filename) {
+        try {
+            return new JSONObject(new String(Files.readAllBytes(Paths.get(filename))));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Step("")
+    public static String bodyJson(String filename) {
+        JSONObject json = readJsonFile(filename);
+        assert json != null;
+        json.put("name", "Tomato");
+        json.put("job", "Eat maket");
+        return json.toString();
     }
 }

@@ -2,6 +2,7 @@ package ru.vasyukov;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import ru.vasyukov.apiBase.ApiBase;
@@ -33,9 +34,10 @@ public class Tests extends ApiBase {
 
     @DisplayName("Тест Проверка json")
     @ParameterizedTest(name = "{arguments}")
-    @MethodSource("ru.vasyukov.data.TestParams#providerTest1")
-    public void TestJson(String namePers) {
-        Assertions.assertTrue(createJsonFile("myJson"), "Файл json не создан");
+    @MethodSource("ru.vasyukov.data.TestParams#providerTest2")
+    public void TestJson(String filename) {
+        Assertions.assertTrue(createJsonFile(filename), "Файл " + filename + " не создан");
+        System.out.println(bodyJson(filename));
 
     }
 }

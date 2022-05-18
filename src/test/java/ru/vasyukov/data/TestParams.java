@@ -13,4 +13,8 @@ public class TestParams {
     protected static Stream<Arguments> providerTest1() {
         return Stream.of(arguments( "Morty Smith"));
     }
+
+    protected static Stream<Arguments> providerTest2() {
+        return Stream.of(arguments( "src/test/resources/myJson.json"));
+    }
 }
