@@ -16,7 +16,7 @@ public class Specification {
                 .build();
     }
 
-    public static ResponseSpecification responseSpecListPers(){
+    public static ResponseSpecification responseSpecCheckListPers(){
         return new ResponseSpecBuilder()
                 .expectStatusCode(200)
                 .expectBody("results", notNullValue())
@@ -26,7 +26,7 @@ public class Specification {
                 .build();
     }
 
-    public static ResponseSpecification responseSpecPerson(){
+    public static ResponseSpecification responseSpecCheckPerson(){
         return new ResponseSpecBuilder()
                 .expectStatusCode(200)
                 .expectBody("name", notNullValue())
@@ -38,7 +38,7 @@ public class Specification {
                 .build();
     }
 
-    public static ResponseSpecification responseSpecEpisode(){
+    public static ResponseSpecification responseSpecCheckEpisode(){
         return new ResponseSpecBuilder()
                 .expectStatusCode(200)
                 .expectBody("name", notNullValue())
@@ -54,7 +54,7 @@ public class Specification {
                 .build();
     }
 
-    public static ResponseSpecification responseSpecCreate(){
+    public static ResponseSpecification responseSpecCheckCreate(){
         return new ResponseSpecBuilder()
                 .expectStatusCode(201)
                 .expectBody("name", notNullValue())

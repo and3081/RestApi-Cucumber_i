@@ -1,4 +1,4 @@
-package ru.vasyukov.data;
+package ru.vasyukov.dto;
 
 import java.util.List;
 

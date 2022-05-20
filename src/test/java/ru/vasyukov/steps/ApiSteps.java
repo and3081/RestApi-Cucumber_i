@@ -1,67 +1,123 @@
 package ru.vasyukov.steps;
 
-import org.junit.jupiter.api.Assertions;
-import ru.vasyukov.apiBase.ApiBase;
+import io.qameta.allure.Step;
+import org.json.JSONObject;
+import ru.vasyukov.dto.Episode;
+import ru.vasyukov.dto.ListPers;
+import ru.vasyukov.dto.Person;
+import ru.vasyukov.properties.TestData;
 
-public class ApiSteps extends ApiBase {
-    private final DataStorage dataStorage = new DataStorage();
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.stream.Collectors;
 
-    public void findCheckPersonIdForName(String nameFirstPers) {
-        dataStorage.setPersonFirstId(findPersonIdForName(nameFirstPers));
-        Assertions.assertNotNull(dataStorage.getPersonFirstId(),
-                "ID персонажа '" + nameFirstPers + "' не найден");
+import static io.restassured.RestAssured.given;
+import static ru.vasyukov.specifications.Specification.*;
+
+public class ApiSteps {
+
+    @Step("Поиск ID персонажа по его имени {namePers}")
+    public static Integer findPersonIdForName(String namePers) {
+        ListPers listPers;
+        int numberPage = 0;
+        do {
+            numberPage++;
+            //System.out.printf("с.%d..\n", numberPage);
+            listPers= given()
+                    .spec(requestSpecRick())
+                    .queryParam("page", numberPage)
+                    .when()
+                    .get(TestData.props.apiCharacter())
+                    .then()
+                    //.log().body()
+                    .spec(responseSpecCheckListPers())
+                    .extract().body().as(ListPers.class);
+            List<Object> listId= listPers.getResults().stream()
+                    .filter(el-> el.getName().equals(namePers))
+                    .limit(1)
+                    .map(Person::getId)
+                    .collect(Collectors.toList());
+            if (listId.size() > 0) return (Integer) listId.get(0);
+        } while (listPers.getInfo().getNext() != null);
+        return null;
     }
 
-    public void findFirstPersonCheckEpisodes() {
-        dataStorage.setPersonFirst(getPerson(dataStorage.getPersonFirstId(), null));
-        Assertions.assertFalse(dataStorage.getPersonFirst().getEpisode().isEmpty(),
-                "Не найдены эпизоды у ID " + dataStorage.getPersonFirstId());
+    @Step("Поиск персонажа по ID {idPers} или URL {url}")
+    public static Person getPerson(int idPers, String url) {
+        return given()
+                .spec(requestSpecRick())
+                //.log().all()
+                .when()
+                .get(url==null || url.isEmpty() ? TestData.props.apiCharacter() + "/" + idPers : url)
+                .then()
+                //.log().all()
+                .spec(responseSpecCheckPerson())
+                .extract().body().as(Person.class);
     }
 
-    public void findLastEpisodeCheckPersons() {
-        dataStorage.setLastEpisode(getLastEpisode(dataStorage.getPersonFirst()));
-        Assertions.assertFalse(dataStorage.getLastEpisode().getCharacters().isEmpty(),
-                "Не найдены персонажи у эпизода");
+    @Step("Поиск последнего эпизода у персонажа {person.name}")
+    public static Episode getLastEpisode(Person person) {
+        String lastEpisode = person.getEpisode().get(person.getEpisode().size()-1);
+        return given()
+                .spec(requestSpecRick())
+                .when()
+                .get(lastEpisode)
+                .then()
+                //.log().body()
+                .spec(responseSpecCheckEpisode())
+                .extract().body().as(Episode.class);
     }
 
-    public void findSecondPerson() {
-        dataStorage.setPersonSecond(getLastPerson(dataStorage.getLastEpisode()));
+    @Step("Поиск последнего персонажа у эпизода {episode.name}")
+    public static Person getLastPerson(Episode episode) {
+        String lastPerson = episode.getCharacters().get(episode.getCharacters().size() - 1);
+        return getPerson(0 , lastPerson);
     }
 
-    public void assertTwoPersons() {
-        System.out.printf("Перс.1: %s  Раса %s  Локация %s\n",
-                dataStorage.getPersonFirst().getName(),
-                dataStorage.getPersonFirst().getSpecies(),
-                dataStorage.getPersonFirst().getLocation().getName());
-        System.out.printf("Перс.2: %s  Раса %s  Локация %s\n",
-                dataStorage.getPersonSecond().getName(),
-                dataStorage.getPersonSecond().getSpecies(),
-                dataStorage.getPersonSecond().getLocation().getName());
-        Assertions.assertEquals(dataStorage.getPersonFirst().getSpecies(),
-                dataStorage.getPersonSecond().getSpecies(),
-                "Расы у двух персонажей разные");
-        Assertions.assertEquals(dataStorage.getPersonFirst().getLocation().getName(),
-                dataStorage.getPersonSecond().getLocation().getName(),
-                "Локации у двух персонажей разные");
+    @Step("Создание файла Json для запроса {filename}")
+    public static boolean createJsonFile(String filename) {
+        JSONObject json = new JSONObject();
+        json.put("name", "Potato");
+        try(FileWriter file = new FileWriter(filename)) {
+            file.write(json.toString(2));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
-    public void createCheckJsonFile(String filename) {
-        Assertions.assertTrue(createJsonFile(filename),
-                "Файл " + filename + " не создан");
+    public static JSONObject readJsonFile(String filename) {
+        try {
+            return new JSONObject(new String(Files.readAllBytes(Paths.get(filename))));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
-    public void createUserFromFile(String filename) {
-        dataStorage.setRequestJson(bodyJson(filename));
-        dataStorage.setResponseJson(createUser(dataStorage.getRequestJson()));
+    @Step("Формирование тела запроса из файла Json {filename}")
+    public static JSONObject bodyJson(String filename) {
+        JSONObject json = readJsonFile(filename);
+        assert json != null;
+        json.put("name", "Tomato");
+        json.put("job", "Eat maket");
+        return json;
     }
 
-    public void assertResponse() {
-        dataStorage.getRequestJson().put("id",
-                dataStorage.getResponseJson().optString("id", "нет"));
-        dataStorage.getRequestJson().put("createdAt",
-                dataStorage.getResponseJson().optString("createdAt", "нет"));
-        Assertions.assertTrue(dataStorage.getRequestJson()
-                        .similar(dataStorage.getResponseJson()),
-                "Json ответа не соответствует ожидаемому");
+    @Step("Создание юзера {body}")
+    public static JSONObject createUser(JSONObject body) {
+        return new JSONObject(given()
+                .spec(requestSpecReqres())
+                .body(body.toString())
+                .when()
+                .post(TestData.props.apiUsers())
+                .then()
+                //.log().body()
+                .spec(responseSpecCheckCreate())
+                .extract().body().asString());
     }
 }

@@ -17,6 +17,12 @@ public interface Props extends Config {
     @Key("base.url.rickandmortyapi")
     String baseUrlRickandmortyapi();
 
+    @Key("api.character")
+    String apiCharacter();
+
     @Key("base.url.reqres")
     String baseUrlReqres();
+
+    @Key("api.users")
+    String apiUsers();
 }

@@ -1,15 +1,16 @@
 package ru.vasyukov.steps;
 
 import org.json.JSONObject;
-import ru.vasyukov.data.Episode;
-import ru.vasyukov.data.Person;
+import ru.vasyukov.dto.Episode;
+import ru.vasyukov.dto.Person;
 
-public class DataStorage {
+public class StepStorage {
     private Integer personFirstId;
     private Person PersonFirst;
     private Episode lastEpisode;
     private Person PersonSecond;
 
+    private String filename;
     private JSONObject requestJson;
     private JSONObject responseJson;
 
@@ -24,6 +25,9 @@ public class DataStorage {
 
     public Person getPersonSecond() { return PersonSecond; }
     public void setPersonSecond(Person personSecond) { PersonSecond = personSecond; }
+
+    public String getFilename() { return filename; }
+    public void setFilename(String filename) { this.filename = filename; }
 
     public JSONObject getRequestJson() { return requestJson; }
     public void setRequestJson(JSONObject requestJson) { this.requestJson = requestJson; }
