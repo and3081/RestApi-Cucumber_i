@@ -32,15 +32,15 @@ public class ApiBase {
                     .get("api/character")
                     .then()
                     .spec(responseSpecListPers())
-                    //.log().body()
+                    .log().body()
                     .extract().body().as(ListPers.class);
             List<Object> listId= listPers.getResults().stream()
-                    .filter(el-> el.get("name").equals(namePers))
+                    .filter(el-> el.getName().equals(namePers))
                     .limit(1)
-                    .map(el-> el.get("id"))
+                    .map(Person::getId)
                     .collect(Collectors.toList());
             if (listId.size() > 0) return (Integer) listId.get(0);
-        } while (listPers.getInfo().get("next") != null);
+        } while (listPers.getInfo().getNext() != null);
         return null;
     }
 

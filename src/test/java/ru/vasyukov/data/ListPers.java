@@ -4,17 +4,17 @@ import java.util.List;
 import java.util.Map;
 
 public class ListPers {
-    private Map<String,Object> info;
-    private List<Map<String,Object>> results;
+    private Info info;
+    private List<Person> results;
 
-    public ListPers() { super(); }
+    public ListPers() {}
 
-    public ListPers(Map<String,Object> info, List<Map<String,Object>> results) {
+    public ListPers(Info info, List<Person> results) {
         this.info = info;
         this.results = results;
     }
 
-    public Map<String,Object> getInfo() { return info; }
+    public Info getInfo() { return info; }
 
-    public List<Map<String,Object>> getResults() { return results; }
+    public List<Person> getResults() { return results; }
 }

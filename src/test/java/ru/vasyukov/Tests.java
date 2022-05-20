@@ -32,15 +32,15 @@ public class Tests extends ApiBase {
                 "Локации у двух персонажей разные");
     }
 
-    @DisplayName("Тест Проверка json")
-    @ParameterizedTest(name = "{displayName}")
-    @MethodSource("ru.vasyukov.data.TestParams#providerTest2")
-    public void TestJson(String filename) {
-        Assertions.assertTrue(createJsonFile(filename), "Файл " + filename + " не создан");
-        JSONObject jsonRequest = bodyJson(filename);
-        JSONObject jsonResponse = createUser(jsonRequest);
-        jsonRequest.put("id", jsonResponse.optString("id", "нет"));
-        jsonRequest.put("createdAt", jsonResponse.optString("createdAt", "нет"));
-        Assertions.assertTrue(jsonRequest.similar(jsonResponse), "Json ответа не соответствует ожидаемому");
-    }
+//    @DisplayName("Тест Проверка json")
+//    @ParameterizedTest(name = "{displayName}")
+//    @MethodSource("ru.vasyukov.data.TestParams#providerTest2")
+//    public void TestJson(String filename) {
+//        Assertions.assertTrue(createJsonFile(filename), "Файл " + filename + " не создан");
+//        JSONObject jsonRequest = bodyJson(filename);
+//        JSONObject jsonResponse = createUser(jsonRequest);
+//        jsonRequest.put("id", jsonResponse.optString("id", "нет"));
+//        jsonRequest.put("createdAt", jsonResponse.optString("createdAt", "нет"));
+//        Assertions.assertTrue(jsonRequest.similar(jsonResponse), "Json ответа не соответствует ожидаемому");
+//    }
 }
