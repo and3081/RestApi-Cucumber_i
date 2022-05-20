@@ -11,7 +11,7 @@ public class Episode {
     private String url;
     private String created;
 
-    public Episode() { super(); }
+    public Episode() {}
 
     public Episode(int id, String name, String air_date, String episode, List<String> characters,
                    String url, String created) {

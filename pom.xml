@@ -16,10 +16,13 @@
 
         <junit.jupiter.version>5.7.0</junit.jupiter.version>
         <rest-assured.version>4.2.0</rest-assured.version>
+        <cucumber.version>6.9.1</cucumber.version>
         <log4jCore.version>2.13.2</log4jCore.version>
         <aspectj.version>1.8.10</aspectj.version>
         <jsoup.version>1.13.1</jsoup.version>
+        <cucumber.6.jvm.version>2.13.6</cucumber.6.jvm.version>
         <allure.version>2.13.2</allure.version>
+        <allure-maven.version>2.10.0</allure-maven.version>
         <owner.version>1.0.12</owner.version>
         <json.version>20220320</json.version>
 
@@ -27,6 +30,17 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-java</artifactId>
+            <version>${cucumber.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-junit</artifactId>
+            <version>${cucumber.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
@@ -61,6 +75,11 @@
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-rest-assured</artifactId>
             <version>${allure.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-cucumber6-jvm</artifactId>
+            <version>${cucumber.6.jvm.version}</version>
         </dependency>
         <dependency>
             <groupId>io.qameta.allure</groupId>
@@ -118,6 +137,9 @@
                     <perCoreThreadCount>${parallelCount}</perCoreThreadCount>
                     <argLine>
                         -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
+                        <!--                        awa-->
+                        -Dcucumber.plugin="io.qameta.allure.cucumber6jvm.AllureCucumber6Jvm"
+                        <!--                        awa-->
                         <!--                        нужно указать кодировку иначе в терминале не будет кирилицы у фич кукумбера-->
                         -Dfile.encoding=UTF-8
                     </argLine>
@@ -138,7 +160,7 @@
             <plugin>
                 <groupId>io.qameta.allure</groupId>
                 <artifactId>allure-maven</artifactId>
-                <version>2.10.0</version>
+                <version>${allure-maven.version}</version>
             </plugin>
         </plugins>
     </build>

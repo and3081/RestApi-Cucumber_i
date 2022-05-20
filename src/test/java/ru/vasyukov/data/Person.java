@@ -17,7 +17,7 @@ public class Person {
     private String url;
     private String created;
 
-    public Person() { super(); }
+    public Person() {}
 
     public Person(int id, String name, String status, String species, String type,
                   String gender, Map<String, Object> origin, Map<String, Object> location,
