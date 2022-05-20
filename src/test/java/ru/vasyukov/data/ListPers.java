@@ -1,7 +1,6 @@
 package ru.vasyukov.data;
 
 import java.util.List;
-import java.util.Map;
 
 public class ListPers {
     private Info info;

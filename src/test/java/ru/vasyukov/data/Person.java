@@ -1,7 +1,6 @@
 package ru.vasyukov.data;
 
 import java.util.List;
-import java.util.Map;
 
 public class Person {
     private int id;
@@ -10,8 +9,8 @@ public class Person {
     private String species;  // "Human",...
     private String type;
     private String gender;  // 'Female', 'Male', 'Genderless' or 'unknown'
-    private Map<String,Object> origin;  // "name", "url"
-    private Map<String,Object> location;  // "name", "url"
+    private Origin origin;  // "name", "url"
+    private Location location;  // "name", "url"
     private String image;
     private List<String> episode;
     private String url;
@@ -20,7 +19,7 @@ public class Person {
     public Person() {}
 
     public Person(int id, String name, String status, String species, String type,
-                  String gender, Map<String, Object> origin, Map<String, Object> location,
+                  String gender, Origin origin, Location location,
                   String image, List<String> episode, String url, String created) {
         this.id = id;
         this.name = name;
@@ -48,9 +47,9 @@ public class Person {
 
     public String getGender() { return gender; }
 
-    public Map<String, Object> getOrigin() { return origin; }
+    public Origin getOrigin() { return origin; }
 
-    public Map<String, Object> getLocation() { return location; }
+    public Location getLocation() { return location; }
 
     public String getImage() { return image; }
 
