@@ -44,4 +44,24 @@ public class ApiSteps extends ApiBase {
                 dataStorage.getPersonSecond().getLocation().getName(),
                 "Локации у двух персонажей разные");
     }
+
+    public void createCheckJsonFile(String filename) {
+        Assertions.assertTrue(createJsonFile(filename),
+                "Файл " + filename + " не создан");
+    }
+
+    public void createUserFromFile(String filename) {
+        dataStorage.setRequestJson(bodyJson(filename));
+        dataStorage.setResponseJson(createUser(dataStorage.getRequestJson()));
+    }
+
+    public void assertResponse() {
+        dataStorage.getRequestJson().put("id",
+                dataStorage.getResponseJson().optString("id", "нет"));
+        dataStorage.getRequestJson().put("createdAt",
+                dataStorage.getResponseJson().optString("createdAt", "нет"));
+        Assertions.assertTrue(dataStorage.getRequestJson()
+                        .similar(dataStorage.getResponseJson()),
+                "Json ответа не соответствует ожидаемому");
+    }
 }
