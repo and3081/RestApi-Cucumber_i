@@ -32,7 +32,7 @@ public class ApiBase {
                     .get("api/character")
                     .then()
                     .spec(responseSpecListPers())
-                    .log().body()
+                    //.log().body()
                     .extract().body().as(ListPers.class);
             List<Object> listId= listPers.getResults().stream()
                     .filter(el-> el.getName().equals(namePers))
