@@ -7,12 +7,14 @@ import io.restassured.specification.ResponseSpecification;
 import ru.vasyukov.properties.TestData;
 
 import static org.hamcrest.Matchers.*;
+import static ru.vasyukov.listener.MyListener.myListener;
 
 public class Specification {
     public static RequestSpecification requestSpecRick() {
         return new RequestSpecBuilder()
                 .setBaseUri(TestData.props.baseUrlRickandmortyapi())
                 .setContentType("application/json;charset=UTF-8")
+                .addFilter(myListener())
                 .build();
     }
 
@@ -51,6 +53,7 @@ public class Specification {
         return new RequestSpecBuilder()
                 .setBaseUri(TestData.props.baseUrlReqres())
                 .setContentType("application/json;charset=UTF-8")
+                .addFilter(myListener())
                 .build();
     }
 
