@@ -1,5 +1,7 @@
 package ru.vasyukov.steps;
 
+import io.qameta.allure.Allure;
+import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
 import org.json.JSONObject;
 import ru.vasyukov.dto.Episode;
@@ -99,10 +101,32 @@ public class ApiSteps {
         }
     }
 
-    @Step("Формирование тела запроса из файла Json {filename}")
-    public static JSONObject bodyJson(String filename) {
+    @Attachment(value = "Вариант с аннотацией: аттач файла '{filename}'", type = "application/json")
+    public static byte[] attachFile(String filename) {
+        try {
+            return Files.readAllBytes(Paths.get(filename));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Step("Формирование json запроса из файла Json {filename}")
+    public static JSONObject readBodyJson(String filename) {
+        attachFile(filename);
+        try {
+            Allure.addAttachment("Вариант методом: аттач файла '" + filename + "'",
+                    "application/json", Files.newInputStream(Paths.get(filename)), ".json");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         JSONObject json = readJsonFile(filename);
         assert json != null;
+        return json;
+    }
+
+    @Step("Изменение json запроса")
+    public static JSONObject modifyBodyJson(JSONObject json) {
         json.put("name", "Tomato");
         json.put("job", "Eat maket");
         return json;

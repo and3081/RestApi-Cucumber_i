@@ -64,7 +64,7 @@ public class StepDefinitions extends ApiSteps {
 
     @Когда("Создаем пользователя с данными из файла")
     public void createUserFromFile() {
-        stepStorage.setRequestJson(bodyJson(stepStorage.getFilename()));
+        stepStorage.setRequestJson(modifyBodyJson(readBodyJson(stepStorage.getFilename())));
         stepStorage.setResponseJson(createUser(stepStorage.getRequestJson()));
     }
 
