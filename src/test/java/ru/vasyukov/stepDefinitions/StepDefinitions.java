@@ -5,22 +5,23 @@ import io.cucumber.java.ru.Затем;
 import io.cucumber.java.ru.Когда;
 import io.cucumber.java.ru.Тогда;
 import org.junit.jupiter.api.Assertions;
+import ru.vasyukov.properties.TestData;
 import ru.vasyukov.steps.ApiSteps;
 import ru.vasyukov.steps.StepStorage;
 
 public class StepDefinitions extends ApiSteps {
     private final StepStorage stepStorage = new StepStorage();
 
-    @Когда("Находим ID персонажа1 по имени {string}")
-    public void findCheckPersonIdForName(String nameFirstPers) {
-        stepStorage.setPersonFirstId(findPersonIdForName(nameFirstPers));
+    @Дано("Находим ID персонажа1 по имени")
+    public void findCheckPersonIdForName() {
+        stepStorage.setPersonFirstId(findPersonIdForName(TestData.application.personName()));
         Assertions.assertNotNull(stepStorage.getPersonFirstId(),
-                "ID персонажа '" + nameFirstPers + "' не найден");
+                "ID персонажа '" + TestData.application.personName() + "' не найден");
     }
 
-    @Затем("Находим персонажа по ID и проверяем у него наличие эпизодов")
+    @Когда("Находим персонажа1 по ID и проверяем у него наличие эпизодов")
     public void findFirstPersonCheckEpisodes() {
-        stepStorage.setPersonFirst(getPerson(stepStorage.getPersonFirstId(), null));
+        stepStorage.setPersonFirst(getPerson(stepStorage.getPersonFirstId()));
         Assertions.assertFalse(stepStorage.getPersonFirst().getEpisode().isEmpty(),
                 "Не найдены эпизоды у ID " + stepStorage.getPersonFirstId());
     }
@@ -39,27 +40,22 @@ public class StepDefinitions extends ApiSteps {
 
     @Тогда("Сверяем расу и локацию персонажа1 и персонажа2")
     public void assertTwoPersons() {
-        System.out.printf("Перс.1: %s  Раса %s  Локация %s\n",
+        vewPerson(stepStorage.getPersonFirst().getId(),
                 stepStorage.getPersonFirst().getName(),
                 stepStorage.getPersonFirst().getSpecies(),
                 stepStorage.getPersonFirst().getLocation().getName());
-        System.out.printf("Перс.2: %s  Раса %s  Локация %s\n",
+        vewPerson(stepStorage.getPersonSecond().getId(),
                 stepStorage.getPersonSecond().getName(),
                 stepStorage.getPersonSecond().getSpecies(),
                 stepStorage.getPersonSecond().getLocation().getName());
-        Assertions.assertEquals(stepStorage.getPersonFirst().getSpecies(),
-                stepStorage.getPersonSecond().getSpecies(),
-                "Расы у двух персонажей разные");
-        Assertions.assertEquals(stepStorage.getPersonFirst().getLocation().getName(),
-                stepStorage.getPersonSecond().getLocation().getName(),
-                "Локации у двух персонажей разные");
+        comparePersons(stepStorage);
     }
 
-    @Дано("Создаем файл с данными для запроса {string}")
-    public void createCheckJsonFile(String filename) {
-        stepStorage.setFilename(filename);
-        Assertions.assertTrue(createJsonFile(filename),
-                "Файл " + filename + " не создан");
+    @Дано("Создаем файл с данными для запроса")
+    public void createCheckJsonFile() {
+        stepStorage.setFilename(TestData.application.filename());
+        Assertions.assertTrue(createJsonFile(TestData.application.filename()),
+                "Файл " + TestData.application.filename() + " не создан");
     }
 
     @Когда("Создаем пользователя с данными из файла")

@@ -19,9 +19,15 @@ public interface Application extends Config {
     @Key("api.character")
     String apiCharacter();
 
+    @Key("person.name")
+    String personName();
+
     @Key("base.url.reqres")
     String baseUrlReqres();
 
     @Key("api.users")
     String apiUsers();
+
+    @Key("file.name")
+    String filename();
 }

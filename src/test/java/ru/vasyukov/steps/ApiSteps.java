@@ -4,6 +4,7 @@ import io.qameta.allure.Allure;
 import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
 import org.json.JSONObject;
+import org.junit.jupiter.api.Assertions;
 import ru.vasyukov.dto.Episode;
 import ru.vasyukov.dto.ListPers;
 import ru.vasyukov.dto.Person;
@@ -47,13 +48,13 @@ public class ApiSteps {
         return null;
     }
 
-    @Step("Поиск персонажа по ID {idPers} или URL {url}")
-    public static Person getPerson(int idPers, String url) {
+    @Step("Поиск персонажа по ID {idPers}")
+    public static Person getPerson(int idPers) {
         return given()
                 .spec(requestSpecRick())
                 //.log().all()
                 .when()
-                .get(url==null || url.isEmpty() ? TestData.application.apiCharacter() + "/" + idPers : url)
+                .get(TestData.application.apiCharacter() + "/" + idPers)
                 .then()
                 //.log().all()
                 .spec(responseSpecCheckPerson())
@@ -75,8 +76,9 @@ public class ApiSteps {
 
     @Step("Поиск последнего персонажа у эпизода {episode.name}")
     public static Person getLastPerson(Episode episode) {
-        String lastPerson = episode.getCharacters().get(episode.getCharacters().size() - 1);
-        return getPerson(0 , lastPerson);
+        String lastPersonID = episode.getCharacters().get(episode.getCharacters().size() - 1)
+                .replaceAll("[^0-9]", "");
+        return getPerson(Integer.parseInt(lastPersonID));
     }
 
     @Step("Создание файла Json для запроса {filename}")
@@ -143,5 +145,18 @@ public class ApiSteps {
                 //.log().body()
                 .spec(responseSpecCheckCreate())
                 .extract().body().asString());
+    }
+
+    @Step("Данные персонажа ID {id}: имя '{name}' раса '{species}' локация '{location}'")
+    public static void vewPerson(int id, String name, String species, String location) {}
+
+    @Step("Сверка персонажей")
+    public static void comparePersons(StepStorage stepStorage) {
+        Assertions.assertEquals(stepStorage.getPersonFirst().getSpecies(),
+                stepStorage.getPersonSecond().getSpecies(),
+                "Расы у двух персонажей разные");
+        Assertions.assertEquals(stepStorage.getPersonFirst().getLocation().getName(),
+                stepStorage.getPersonSecond().getLocation().getName(),
+                "Локации у двух персонажей разные");
     }
 }
