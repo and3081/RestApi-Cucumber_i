@@ -1,2 +1,6 @@
-/target/
+/.idea/
 /.allure/
+/target/
+/build/
+*.iml
+*.log
