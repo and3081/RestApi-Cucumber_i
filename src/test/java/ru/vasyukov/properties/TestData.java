@@ -4,7 +4,7 @@ import org.aeonbits.owner.ConfigFactory;
 
 public class TestData {
     /**
-     * static метод для работы с проперти из файла props.properties
+     * static метод для работы с проперти из файла application.properties
      */
-    public static Props props = ConfigFactory.create(Props.class);
+    public static Application application = ConfigFactory.create(Application.class);
 }

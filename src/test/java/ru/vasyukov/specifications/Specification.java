@@ -12,7 +12,7 @@ import static ru.vasyukov.listener.MyListener.myListener;
 public class Specification {
     public static RequestSpecification requestSpecRick() {
         return new RequestSpecBuilder()
-                .setBaseUri(TestData.props.baseUrlRickandmortyapi())
+                .setBaseUri(TestData.application.baseUrlRickandmortyapi())
                 .setContentType("application/json;charset=UTF-8")
                 .addFilter(myListener())
                 .build();
@@ -51,7 +51,7 @@ public class Specification {
 
     public static RequestSpecification requestSpecReqres() {
         return new RequestSpecBuilder()
-                .setBaseUri(TestData.props.baseUrlReqres())
+                .setBaseUri(TestData.application.baseUrlReqres())
                 .setContentType("application/json;charset=UTF-8")
                 .addFilter(myListener())
                 .build();
