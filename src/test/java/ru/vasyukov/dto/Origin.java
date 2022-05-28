@@ -1,5 +1,8 @@
 package ru.vasyukov.dto;
 
+/**
+ * DTO для места происхождения персонажа
+ */
 public class Origin {
     private String name;
     private String url;

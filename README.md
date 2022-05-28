@@ -5,9 +5,10 @@
 mvn clean test
 
 # запуск тестов по тегам
-AllTests
-TestsRick
-TestsReqres
+задаются в классе RunnerTest в опции tags, например:
+tags = "@AllTests"
+tags = "@TestsRick"
+tags = "@TestsReqres"
 
 # построение отчета Allure
 mvn allure:serve

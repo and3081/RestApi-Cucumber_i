@@ -2,6 +2,9 @@ package ru.vasyukov.dto;
 
 import java.util.List;
 
+/**
+ * DTO для эпизода
+ */
 public class Episode {
     private int id;
     private String name;

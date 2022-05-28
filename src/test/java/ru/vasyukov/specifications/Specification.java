@@ -9,6 +9,9 @@ import ru.vasyukov.properties.TestData;
 import static org.hamcrest.Matchers.*;
 import static ru.vasyukov.listener.MyListener.myListener;
 
+/**
+ * Класс спеков для запросов и ответов
+ */
 public class Specification {
     public static RequestSpecification requestSpecRick() {
         return new RequestSpecBuilder()

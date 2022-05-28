@@ -1,5 +1,8 @@
 package ru.vasyukov.dto;
 
+/**
+ * DTO для блока info страницы персонажей
+ */
 public class Info {
     private int count;
     private int pages;

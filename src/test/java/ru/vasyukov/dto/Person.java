@@ -2,6 +2,9 @@ package ru.vasyukov.dto;
 
 import java.util.List;
 
+/**
+ * DTO для персонажа
+ */
 public class Person {
     private int id;
     private String name;

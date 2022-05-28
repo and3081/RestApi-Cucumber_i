@@ -20,6 +20,9 @@ import java.util.stream.Collectors;
 import static io.restassured.RestAssured.given;
 import static ru.vasyukov.specifications.Specification.*;
 
+/**
+ * Класс тестовых шагов
+ */
 public class ApiSteps {
 
     @Step("Поиск ID персонажа по его имени {namePers}")

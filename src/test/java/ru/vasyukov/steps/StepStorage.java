@@ -4,12 +4,21 @@ import org.json.JSONObject;
 import ru.vasyukov.dto.Episode;
 import ru.vasyukov.dto.Person;
 
+/**
+ * DTO для тестовых шагов
+ */
 public class StepStorage {
+    /**
+     * Для теста rickandmortyapi.com
+     */
     private Integer personFirstId;
     private Person PersonFirst;
     private Episode lastEpisode;
     private Person PersonSecond;
 
+    /**
+     * Для теста reqres.in
+     */
     private String filename;
     private JSONObject requestJson;
     private JSONObject responseJson;

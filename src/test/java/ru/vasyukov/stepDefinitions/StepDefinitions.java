@@ -9,6 +9,9 @@ import ru.vasyukov.properties.TestData;
 import ru.vasyukov.steps.ApiSteps;
 import ru.vasyukov.steps.StepStorage;
 
+/**
+ * Класс методов-определений для аннотаций кукумбера
+ */
 public class StepDefinitions extends ApiSteps {
     private final StepStorage stepStorage = new StepStorage();
 

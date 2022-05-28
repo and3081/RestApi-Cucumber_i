@@ -1,5 +1,8 @@
 package ru.vasyukov.dto;
 
+/**
+ * DTO для локации персонажа
+ */
 public class Location {
     private String name;
     private String url;

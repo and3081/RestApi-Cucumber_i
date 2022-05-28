@@ -2,6 +2,9 @@ package ru.vasyukov.dto;
 
 import java.util.List;
 
+/**
+ * DTO для страницы персонажей
+ */
 public class ListPers {
     private Info info;
     private List<Person> results;
