@@ -11,20 +11,27 @@
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
+        <!-- Java 8 -->
+        <java.version>1.8</java.version>
+        <compiler.target.version>${java.version}</compiler.target.version>
+        <compiler.source.version>${java.version}</compiler.source.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <junit.jupiter.version>5.7.0</junit.jupiter.version>
-        <rest-assured.version>4.2.0</rest-assured.version>
+        <junit.jupiter.version>5.8.2</junit.jupiter.version>
         <cucumber.version>6.9.1</cucumber.version>
-        <log4jCore.version>2.13.2</log4jCore.version>
-        <aspectj.version>1.8.10</aspectj.version>
-        <jsoup.version>1.13.1</jsoup.version>
-        <cucumber.6.jvm.version>2.13.6</cucumber.6.jvm.version>
-        <allure.version>2.13.2</allure.version>
-        <allure-maven.version>2.10.0</allure-maven.version>
-        <owner.version>1.0.12</owner.version>
+
+        <rest-assured.version>4.2.0</rest-assured.version>
         <json.version>20220320</json.version>
+        <jsoup.version>1.13.1</jsoup.version>
+
+        <aspectj.version>1.9.4</aspectj.version>
+        <maven-surefire.version>3.0.0-M5</maven-surefire.version>
+        <allure.version>2.17.3</allure.version>
+        <cucumber.6.jvm.version>2.13.6</cucumber.6.jvm.version>
+        <owner.version>1.0.12</owner.version>
+
+        <log4jCore.version>2.13.2</log4jCore.version>
 
         <parallelCount>1</parallelCount>
     </properties>
@@ -41,34 +48,25 @@
             <version>${cucumber.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>${junit.jupiter.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>${junit.jupiter.version}</version>
-            <scope>test</scope>
-        </dependency>
+        <!-- Test API(s) -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <version>${junit.jupiter.version}</version>
-            <scope>test</scope>
         </dependency>
+
+        <!-- Test engine(s) -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit.jupiter.version}</version>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/io.rest-assured/rest-assured -->
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
             <version>${rest-assured.version}</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
-        <dependency>
-            <groupId>org.jsoup</groupId>
-            <artifactId>jsoup</artifactId>
-            <version>${jsoup.version}</version>
         </dependency>
 
         <dependency>
@@ -94,28 +92,40 @@
             <version>${log4jCore.version}</version>
         </dependency>
 
-        <!--Для скринов-->
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>2.4</version>
-        </dependency>
         <!-- Для пропертей -->
         <dependency>
             <groupId>org.aeonbits.owner</groupId>
             <artifactId>owner</artifactId>
             <version>${owner.version}</version>
         </dependency>
+
         <!-- https://mvnrepository.com/artifact/org.json/json -->
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>${json.version}</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>${jsoup.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>io.qameta.allure</groupId>
+                <artifactId>allure-maven</artifactId>
+                <version>2.10.0</version>
+                <configuration>
+                    <reportVersion>${allure.version}</reportVersion>
+                    <resultsDirectory>${basedir}/allure-results</resultsDirectory>
+                    <reportDirectory>${basedir}/target/allure-reports</reportDirectory>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -129,7 +139,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.20</version>
+                <version>${maven-surefire.version}</version>
                 <configuration>
                     <parallel>methods</parallel>
                     <threadCount>${parallelCount}</threadCount>
@@ -137,17 +147,12 @@
                     <perCoreThreadCount>${parallelCount}</perCoreThreadCount>
                     <argLine>
                         -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
-                        <!--                        awa-->
 <!--                        -Dcucumber.plugin="io.qameta.allure.cucumber6jvm.AllureCucumber6Jvm"-->
-                        <!--                        awa-->
                         <!--                        нужно указать кодировку иначе в терминале не будет кирилицы у фич кукумбера-->
                         -Dfile.encoding=UTF-8
                     </argLine>
                     <failIfNoTests>true</failIfNoTests>
                     <testFailureIgnore>true</testFailureIgnore>
-                    <systemPropertyVariables>
-                        <allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>
-                    </systemPropertyVariables>
                 </configuration>
                 <dependencies>
                     <dependency>
@@ -156,11 +161,6 @@
                         <version>${aspectj.version}</version>
                     </dependency>
                 </dependencies>
-            </plugin>
-            <plugin>
-                <groupId>io.qameta.allure</groupId>
-                <artifactId>allure-maven</artifactId>
-                <version>${allure-maven.version}</version>
             </plugin>
         </plugins>
     </build>
