@@ -158,8 +158,8 @@ public class ApiSteps {
         Assertions.assertEquals(stepStorage.getPersonFirst().getSpecies(),
                 stepStorage.getPersonSecond().getSpecies(),
                 "Расы у двух персонажей разные");
-        Assertions.assertEquals(stepStorage.getPersonFirst().getLocation().getName(),
+        Assertions.assertNotEquals(stepStorage.getPersonFirst().getLocation().getName(),
                 stepStorage.getPersonSecond().getLocation().getName(),
-                "Локации у двух персонажей разные");
+                "Локации у двух персонажей одинаковы");
     }
 }

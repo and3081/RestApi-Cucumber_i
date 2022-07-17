@@ -2,7 +2,6 @@
 /.allure/
 /target/
 /build/
+/allure-results/
 *.iml
 *.log
-/test-output
-/allure-results/
