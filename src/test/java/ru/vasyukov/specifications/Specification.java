@@ -2,6 +2,7 @@ package ru.vasyukov.specifications;
 
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
+import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 import ru.vasyukov.properties.TestData;
@@ -16,7 +17,7 @@ public class Specification {
     public static RequestSpecification requestSpecRick() {
         return new RequestSpecBuilder()
                 .setBaseUri(TestData.application.baseUrlRickandmortyapi())
-                .setContentType("application/json;charset=UTF-8")
+                .setContentType(ContentType.JSON + ";charset=UTF-8")
                 .addFilter(myListener())
                 .build();
     }
@@ -55,7 +56,7 @@ public class Specification {
     public static RequestSpecification requestSpecReqres() {
         return new RequestSpecBuilder()
                 .setBaseUri(TestData.application.baseUrlReqres())
-                .setContentType("application/json;charset=UTF-8")
+                .setContentType(ContentType.JSON + ";charset=UTF-8")
                 .addFilter(myListener())
                 .build();
     }
