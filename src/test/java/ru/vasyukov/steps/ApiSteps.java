@@ -151,7 +151,7 @@ public class ApiSteps {
     }
 
     @Step("Данные персонажа ID {id}: имя '{name}' раса '{species}' локация '{location}'")
-    public static void vewPerson(int id, String name, String species, String location) {}
+    public static void viewPerson(int id, String name, String species, String location) {}
 
     @Step("Сверка персонажей")
     public static void comparePersons(StepStorage stepStorage) {

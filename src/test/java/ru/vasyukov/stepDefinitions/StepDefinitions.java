@@ -43,11 +43,11 @@ public class StepDefinitions extends ApiSteps {
 
     @Тогда("Сверяем расу и локацию персонажа1 и персонажа2")
     public void assertTwoPersons() {
-        vewPerson(stepStorage.getPersonFirst().getId(),
+        viewPerson(stepStorage.getPersonFirst().getId(),
                 stepStorage.getPersonFirst().getName(),
                 stepStorage.getPersonFirst().getSpecies(),
                 stepStorage.getPersonFirst().getLocation().getName());
-        vewPerson(stepStorage.getPersonSecond().getId(),
+        viewPerson(stepStorage.getPersonSecond().getId(),
                 stepStorage.getPersonSecond().getName(),
                 stepStorage.getPersonSecond().getSpecies(),
                 stepStorage.getPersonSecond().getLocation().getName());
