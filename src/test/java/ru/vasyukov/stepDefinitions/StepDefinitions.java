@@ -6,13 +6,15 @@ import io.cucumber.java.ru.Когда;
 import io.cucumber.java.ru.Тогда;
 import org.junit.jupiter.api.Assertions;
 import ru.vasyukov.properties.TestData;
-import ru.vasyukov.steps.ApiSteps;
 import ru.vasyukov.steps.Storage;
+
+import static ru.vasyukov.steps.ApiStepsRick.*;
+import static ru.vasyukov.steps.ApiStepsReqres.*;
 
 /**
  * Класс методов-определений для аннотаций кукумбера
  */
-public class StepDefinitions extends ApiSteps {
+public class StepDefinitions {
     private final Storage storage = Storage.obj;
 
     @Дано("Находим ID персонажа1 по имени")
@@ -57,8 +59,8 @@ public class StepDefinitions extends ApiSteps {
     @Дано("Создаем файл с данными для запроса")
     public void createCheckJsonFile() {
         storage.setFilename(TestData.application.filename());
-        Assertions.assertTrue(createJsonFile(TestData.application.filename()),
-                "Файл " + TestData.application.filename() + " не создан");
+        Assertions.assertTrue(createJsonFile(storage.getFilename()),
+                "Файл " + storage.getFilename() + " не создан");
     }
 
     @Когда("Создаем пользователя с данными из файла")
@@ -69,6 +71,7 @@ public class StepDefinitions extends ApiSteps {
 
     @Тогда("Проверяем json ответа")
     public void assertResponse() {
+        attachJsonAnnotationAllure(storage.getResponseJson());
         storage.getRequestJson().put("id",
                 storage.getResponseJson().optString("id", "нет"));
         storage.getRequestJson().put("createdAt",

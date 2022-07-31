@@ -1,19 +1,12 @@
 package ru.vasyukov.steps;
 
-import io.qameta.allure.Allure;
-import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
-import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import ru.vasyukov.dto.Episode;
 import ru.vasyukov.dto.ListPers;
 import ru.vasyukov.dto.Person;
 import ru.vasyukov.properties.TestData;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,7 +16,7 @@ import static ru.vasyukov.specifications.Specification.*;
 /**
  * Класс тестовых шагов
  */
-public class ApiSteps {
+public class ApiStepsRick {
 
     @Step("Поиск ID персонажа по его имени {namePers}")
     public static Integer findPersonIdForName(String namePers) {
@@ -82,72 +75,6 @@ public class ApiSteps {
         String lastPersonID = episode.getCharacters().get(episode.getCharacters().size() - 1)
                 .replaceAll("[^0-9]", "");
         return getPerson(Integer.parseInt(lastPersonID));
-    }
-
-    @Step("Создание файла Json для запроса {filename}")
-    public static boolean createJsonFile(String filename) {
-        JSONObject json = new JSONObject();
-        json.put("name", "Potato");
-        try(FileWriter file = new FileWriter(filename)) {
-            file.write(json.toString(2));
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
-    }
-
-    public static JSONObject readJsonFile(String filename) {
-        try {
-            return new JSONObject(new String(Files.readAllBytes(Paths.get(filename))));
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    @Attachment(value = "Вариант с аннотацией: аттач файла '{filename}'", type = "application/json")
-    public static byte[] attachFile(String filename) {
-        try {
-            return Files.readAllBytes(Paths.get(filename));
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    @Step("Формирование json запроса из файла Json {filename}")
-    public static JSONObject readBodyJson(String filename) {
-        attachFile(filename);
-        try {
-            Allure.addAttachment("Вариант методом: аттач файла '" + filename + "'",
-                    "application/json", Files.newInputStream(Paths.get(filename)), ".json");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        JSONObject json = readJsonFile(filename);
-        assert json != null;
-        return json;
-    }
-
-    @Step("Изменение json запроса")
-    public static JSONObject modifyBodyJson(JSONObject json) {
-        json.put("name", "Tomato");
-        json.put("job", "Eat maket");
-        return json;
-    }
-
-    @Step("Создание юзера {body}")
-    public static JSONObject createUser(JSONObject body) {
-        return new JSONObject(given()
-                .spec(requestSpecReqres())
-                .body(body.toString())
-                .when()
-                .post(TestData.application.apiUsers())
-                .then()
-                //.log().body()
-                .spec(responseSpecCheckCreate())
-                .extract().body().asString());
     }
 
     @Step("Данные персонажа ID {id}: имя '{name}' раса '{species}' локация '{location}'")
