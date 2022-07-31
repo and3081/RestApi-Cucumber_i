@@ -154,12 +154,12 @@ public class ApiSteps {
     public static void viewPerson(int id, String name, String species, String location) {}
 
     @Step("Сверка персонажей")
-    public static void comparePersons(StepStorage stepStorage) {
-        Assertions.assertEquals(stepStorage.getPersonFirst().getSpecies(),
-                stepStorage.getPersonSecond().getSpecies(),
+    public static void comparePersons(Storage storage) {
+        Assertions.assertEquals(storage.getPersonFirst().getSpecies(),
+                storage.getPersonSecond().getSpecies(),
                 "Расы у двух персонажей разные");
-        Assertions.assertNotEquals(stepStorage.getPersonFirst().getLocation().getName(),
-                stepStorage.getPersonSecond().getLocation().getName(),
+        Assertions.assertNotEquals(storage.getPersonFirst().getLocation().getName(),
+                storage.getPersonSecond().getLocation().getName(),
                 "Локации у двух персонажей одинаковы");
     }
 }

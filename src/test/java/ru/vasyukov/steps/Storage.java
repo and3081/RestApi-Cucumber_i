@@ -7,7 +7,7 @@ import ru.vasyukov.dto.Person;
 /**
  * DTO для тестовых шагов
  */
-public class StepStorage {
+public class Storage {
     /**
      * Для теста rickandmortyapi.com
      */
@@ -22,6 +22,10 @@ public class StepStorage {
     private String filename;
     private JSONObject requestJson;
     private JSONObject responseJson;
+
+    public static Storage obj = new Storage();
+
+    private Storage() {}
 
     public Integer getPersonFirstId() { return personFirstId; }
     public void setPersonFirstId(Integer personFirstId) { this.personFirstId = personFirstId; }
