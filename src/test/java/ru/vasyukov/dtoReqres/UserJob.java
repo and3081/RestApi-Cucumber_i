@@ -1,6 +1,7 @@
 package ru.vasyukov.dtoReqres;
 
-/** DTO для юзера */
+/** DTO для должности юзера */
+@SuppressWarnings("unused")
 public class UserJob {
     private String name;
     private String job;
