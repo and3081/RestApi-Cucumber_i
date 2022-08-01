@@ -20,9 +20,9 @@ import static ru.vasyukov.specifications.Specification.*;
 public class ApiStepsReqres {
 
     @Step("Создание файла Json для запроса {filename}")
-    public static boolean createJsonFile(String filename) {
-        JSONObject json = new JSONObject();
-        json.put("name", "Potato");
+    public static boolean createJsonFile(String filename, String strJson) {
+        JSONObject json = new JSONObject(strJson);
+        //json.put("name", "Potato");
         boolean isWrite = writeJsonFile(filename, json);
         attachFileAnnotationAllure(filename);
         attachFileMethodAllure(filename);

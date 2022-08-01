@@ -11,10 +11,9 @@ import ru.vasyukov.properties.TestData;
 import ru.vasyukov.steps.Storage;
 
 import static ru.vasyukov.steps.ApiStepsRick.*;
-import static ru.vasyukov.steps.ApiStepsReqres.*;
 
-/** Класс методов-определений для аннотаций кукумбера */
-public class StepDefinitions {
+/** Класс методов-определений для аннотаций кукумбера Rick.feature */
+public class StepDefinitionsRick {
     public Storage storage;
 
     @Before
@@ -66,30 +65,5 @@ public class StepDefinitions {
                 storage.getPersonSecond().getSpecies(),
                 storage.getPersonSecond().getLocation().getName());
         comparePersons(storage);
-    }
-
-    @Дано("Создаем файл с данными для запроса")
-    public void createCheckJsonFile() {
-        storage.setFilename(TestData.application.filename());
-        Assertions.assertTrue(createJsonFile(storage.getFilename()),
-                "Файл " + storage.getFilename() + " не создан");
-    }
-
-    @Когда("Создаем пользователя с данными из файла")
-    public void createUserFromFile() {
-        storage.setRequestJson(modifyBodyJson(readBodyJson(storage.getFilename())));
-        storage.setResponseJson(createUser(storage.getRequestJson()));
-    }
-
-    @Тогда("Проверяем json ответа")
-    public void assertResponse() {
-        attachJsonAnnotationAllure(storage.getResponseJson());
-        storage.getRequestJson().put("id",
-                storage.getResponseJson().optString("id", "нет"));
-        storage.getRequestJson().put("createdAt",
-                storage.getResponseJson().optString("createdAt", "нет"));
-        Assertions.assertTrue(storage.getRequestJson()
-                        .similar(storage.getResponseJson()),
-                "Json ответа не соответствует ожидаемому");
     }
 }
