@@ -1,15 +1,15 @@
-package ru.vasyukov.dto;
+package ru.vasyukov.dtoRick;
 
 /**
- * DTO для локации персонажа
+ * DTO для места происхождения персонажа
  */
-public class Location {
+public class Origin {
     private String name;
     private String url;
 
-    public Location() {}
+    public Origin() {}
 
-    public Location(String name, String url) {
+    public Origin(String name, String url) {
         this.name = name;
         this.url = url;
     }

@@ -2,9 +2,9 @@ package ru.vasyukov.steps;
 
 import io.qameta.allure.Step;
 import org.junit.jupiter.api.Assertions;
-import ru.vasyukov.dto.Episode;
-import ru.vasyukov.dto.ListPers;
-import ru.vasyukov.dto.Person;
+import ru.vasyukov.dtoRick.Episode;
+import ru.vasyukov.dtoRick.ListPers;
+import ru.vasyukov.dtoRick.Person;
 import ru.vasyukov.properties.TestData;
 
 import java.util.List;

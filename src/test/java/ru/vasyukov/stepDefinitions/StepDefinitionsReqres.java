@@ -3,8 +3,10 @@ package ru.vasyukov.stepDefinitions;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.ru.Дано;
+import io.cucumber.java.ru.И;
 import io.cucumber.java.ru.Когда;
 import io.cucumber.java.ru.Тогда;
+import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import ru.vasyukov.properties.TestData;
 import ru.vasyukov.steps.Storage;
@@ -34,21 +36,20 @@ public class StepDefinitionsReqres {
                 "Файл " + storage.getFilename() + " не создан");
     }
 
+    @И("Создаем json из файла и дополняем {string} {string}")
+    public void modifyFromFile(String key, String value) {
+        storage.setRequestJson(modifyBodyJson(readBodyJson(storage.getFilename()), key, value));
+    }
+
     @Когда("Создаем пользователя с данными из файла")
     public void createUserFromFile() {
-        storage.setRequestJson(modifyBodyJson(readBodyJson(storage.getFilename())));
-        storage.setResponseJson(createUser(storage.getRequestJson()));
+        storage.setUser(createUser(storage.getRequestJson()));
     }
 
     @Тогда("Проверяем json ответа")
     public void assertResponse() {
-        attachJsonAnnotationAllure(storage.getResponseJson());
-        storage.getRequestJson().put("id",
-                storage.getResponseJson().optString("id", "нет"));
-        storage.getRequestJson().put("createdAt",
-                storage.getResponseJson().optString("createdAt", "нет"));
-        Assertions.assertTrue(storage.getRequestJson()
-                        .similar(storage.getResponseJson()),
-                "Json ответа не соответствует ожидаемому");
+        JSONObject jsonOut = new JSONObject(storage.getUser());
+        attachJsonAnnotationAllure(jsonOut);
+        assertJsonToJson(storage.getRequestJson(), jsonOut);
     }
 }

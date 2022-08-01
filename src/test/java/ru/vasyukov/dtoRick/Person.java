@@ -1,4 +1,4 @@
-package ru.vasyukov.dto;
+package ru.vasyukov.dtoRick;
 
 import java.util.List;
 

@@ -5,6 +5,7 @@ import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
+import ru.vasyukov.dtoReqres.User;
 import ru.vasyukov.properties.TestData;
 
 import java.io.FileWriter;
@@ -12,6 +13,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 import static ru.vasyukov.specifications.Specification.*;
@@ -22,7 +24,6 @@ public class ApiStepsReqres {
     @Step("Создание файла Json для запроса {filename}")
     public static boolean createJsonFile(String filename, String strJson) {
         JSONObject json = new JSONObject(strJson);
-        //json.put("name", "Potato");
         boolean isWrite = writeJsonFile(filename, json);
         attachFileAnnotationAllure(filename);
         attachFileMethodAllure(filename);
@@ -37,16 +38,16 @@ public class ApiStepsReqres {
         return json;
     }
 
-    @Step("Изменение Json запроса")
-    public static JSONObject modifyBodyJson(JSONObject json) {
-        json.put("job", "Eat");
+    @Step("Изменение Json запроса: {key}, {value}")
+    public static JSONObject modifyBodyJson(JSONObject json, String key, String value) {
+        json.put(key, value);
         attachJsonAnnotationAllure(json);
         return json;
     }
 
     @Step("Создание юзера {body}")
-    public static JSONObject createUser(JSONObject body) {
-        return new JSONObject(given()
+    public static User createUser(JSONObject body) {
+        return given()
                 .spec(requestSpecReqres())
                 .body(body.toString())
                 .when()
@@ -54,7 +55,19 @@ public class ApiStepsReqres {
                 .then()
                 //.log().body()
                 .spec(responseSpecCheckCreate())
-                .extract().body().asString());
+                .extract().body().as(User.class);
+    }
+
+    public static void assertJsonToJson(JSONObject jsonIn, JSONObject jsonOut) {
+        Map<String,Object> mapIn = jsonIn.toMap();
+        Map<String,Object> mapOut = jsonOut.toMap();
+
+        for (Map.Entry<String,Object> el : mapIn.entrySet()) {
+            Assertions.assertTrue(mapOut.containsKey(el.getKey()),
+                    "В Json ответа нет ключа " + el.getKey());
+            Assertions.assertEquals(el.getValue(), mapOut.get(el.getKey()),
+                    "В Json разные значения по ключу " + el.getKey());
+        }
     }
 
     public static JSONObject readJsonFile(String filename) {

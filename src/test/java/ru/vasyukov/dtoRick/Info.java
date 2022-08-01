@@ -1,4 +1,4 @@
-package ru.vasyukov.dto;
+package ru.vasyukov.dtoRick;
 
 /**
  * DTO для блока info страницы персонажей

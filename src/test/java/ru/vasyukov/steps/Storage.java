@@ -1,8 +1,9 @@
 package ru.vasyukov.steps;
 
 import org.json.JSONObject;
-import ru.vasyukov.dto.Episode;
-import ru.vasyukov.dto.Person;
+import ru.vasyukov.dtoReqres.User;
+import ru.vasyukov.dtoRick.Episode;
+import ru.vasyukov.dtoRick.Person;
 
 /** DTO для тестовых шагов */
 public class Storage {
@@ -15,7 +16,7 @@ public class Storage {
     /** Для тестов reqres.in */
     private String filename;
     private JSONObject requestJson;
-    private JSONObject responseJson;
+    private User user;
 
     public Integer getPersonFirstId() { return personFirstId; }
     public void setPersonFirstId(Integer personFirstId) { this.personFirstId = personFirstId; }
@@ -35,6 +36,6 @@ public class Storage {
     public JSONObject getRequestJson() { return requestJson; }
     public void setRequestJson(JSONObject requestJson) { this.requestJson = requestJson; }
 
-    public JSONObject getResponseJson() { return responseJson; }
-    public void setResponseJson(JSONObject responseJson) { this.responseJson = responseJson; }
+    public User getUser() { return user; }
+    public void setUser(User user) { this.user = user; }
 }
