@@ -5,7 +5,7 @@ import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
-import ru.vasyukov.dtoReqres.User;
+import ru.vasyukov.dtoReqres.UserJob;
 import ru.vasyukov.properties.TestData;
 
 import java.io.FileWriter;
@@ -46,7 +46,7 @@ public class ApiStepsReqres {
     }
 
     @Step("Создание юзера {body}")
-    public static User createUser(JSONObject body) {
+    public static UserJob createUser(JSONObject body) {
         return given()
                 .spec(requestSpecReqres())
                 .body(body.toString())
@@ -55,7 +55,7 @@ public class ApiStepsReqres {
                 .then()
                 //.log().body()
                 .spec(responseSpecCheckCreate())
-                .extract().body().as(User.class);
+                .extract().body().as(UserJob.class);
     }
 
     public static void assertJsonToJson(JSONObject jsonIn, JSONObject jsonOut) {

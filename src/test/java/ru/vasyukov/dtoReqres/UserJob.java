@@ -1,20 +1,15 @@
 package ru.vasyukov.dtoReqres;
 
-import ru.vasyukov.dtoRick.Location;
-import ru.vasyukov.dtoRick.Origin;
-
-import java.util.List;
-
 /** DTO для юзера */
-public class User {
+public class UserJob {
     private String name;
     private String job;
     private String id;
     private String createdAt;
 
-    public User() {}
+    public UserJob() {}
 
-    public User(String name, String job, String id, String createdAt) {
+    public UserJob(String name, String job, String id, String createdAt) {
         this.name = name;
         this.job = job;
         this.id = id;
@@ -22,10 +17,7 @@ public class User {
     }
 
     public String getName() {return name;}
-
     public String getJob() {return job;}
-
     public String getId() {return id;}
-
     public String getCreatedAt() {return createdAt;}
 }
