@@ -1,5 +1,7 @@
 package ru.vasyukov.stepDefinitions;
 
+import io.cucumber.java.After;
+import io.cucumber.java.Before;
 import io.cucumber.java.ru.Дано;
 import io.cucumber.java.ru.Затем;
 import io.cucumber.java.ru.Когда;
@@ -11,11 +13,21 @@ import ru.vasyukov.steps.Storage;
 import static ru.vasyukov.steps.ApiStepsRick.*;
 import static ru.vasyukov.steps.ApiStepsReqres.*;
 
-/**
- * Класс методов-определений для аннотаций кукумбера
- */
+/** Класс методов-определений для аннотаций кукумбера */
 public class StepDefinitions {
-    private final Storage storage = Storage.obj;
+    public Storage storage;
+
+    @Before
+    public void createStorage() {
+        storage = new Storage();
+    }
+
+    @After
+    public void dropStorage() {
+        if (storage != null) {
+            storage = null;
+        }
+    }
 
     @Дано("Находим ID персонажа1 по имени")
     public void findCheckPersonIdForName() {

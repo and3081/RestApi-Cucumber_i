@@ -4,28 +4,18 @@ import org.json.JSONObject;
 import ru.vasyukov.dto.Episode;
 import ru.vasyukov.dto.Person;
 
-/**
- * DTO для тестовых шагов
- */
+/** DTO для тестовых шагов */
 public class Storage {
-    /**
-     * Для теста rickandmortyapi.com
-     */
+    /** Для тестов rickandmortyapi.com */
     private Integer personFirstId;
     private Person PersonFirst;
     private Episode lastEpisode;
     private Person PersonSecond;
 
-    /**
-     * Для теста reqres.in
-     */
+    /** Для тестов reqres.in */
     private String filename;
     private JSONObject requestJson;
     private JSONObject responseJson;
-
-    public static Storage obj = new Storage();
-
-    private Storage() {}
 
     public Integer getPersonFirstId() { return personFirstId; }
     public void setPersonFirstId(Integer personFirstId) { this.personFirstId = personFirstId; }
