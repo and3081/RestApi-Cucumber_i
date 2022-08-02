@@ -29,6 +29,11 @@ public class StepDefinitionsReqres {
         }
     }
 
+    @Дано("Запрашиваем все страницы юзеров")
+    public void readAllUsers() {
+        queryListUsers(storage);
+    }
+
     @Дано("Создаем файл с данными для запроса {string}")
     public void createCheckJsonFile(String strJson) {
         storage.setFilename(TestData.application.filename());
@@ -43,12 +48,12 @@ public class StepDefinitionsReqres {
 
     @Когда("Создаем пользователя с данными из файла")
     public void createUserFromFile() {
-        storage.setUser(createUser(storage.getRequestJson()));
+        storage.setUserJob(createUser(storage.getRequestJson()));
     }
 
     @Тогда("Проверяем json ответа")
     public void assertResponse() {
-        JSONObject jsonOut = new JSONObject(storage.getUser());
+        JSONObject jsonOut = new JSONObject(storage.getUserJob());
         attachJsonAnnotationAllure(jsonOut);
         assertJsonToJson(storage.getRequestJson(), jsonOut);
     }

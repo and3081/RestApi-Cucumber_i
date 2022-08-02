@@ -61,6 +61,18 @@ public class Specification {
                 .build();
     }
 
+    public static ResponseSpecification responseSpecCheckListUsers(){
+        return new ResponseSpecBuilder()
+                .expectStatusCode(200)
+                .expectBody("page", notNullValue())
+                .expectBody("total", notNullValue())
+                .expectBody("total_pages", notNullValue())
+                .expectBody("data", not(emptyArray()))
+                .expectBody("data.id", not(hasItem(nullValue())))
+                .expectBody("data.email", not(hasItem(nullValue())))
+                .build();
+    }
+
     public static ResponseSpecification responseSpecCheckCreate(){
         return new ResponseSpecBuilder()
                 .expectStatusCode(201)

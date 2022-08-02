@@ -1,9 +1,12 @@
 package ru.vasyukov.steps;
 
 import org.json.JSONObject;
+import ru.vasyukov.dtoReqres.User;
 import ru.vasyukov.dtoReqres.UserJob;
 import ru.vasyukov.dtoRick.Episode;
 import ru.vasyukov.dtoRick.Person;
+
+import java.util.List;
 
 /** DTO для тестовых шагов */
 public class Storage {
@@ -17,6 +20,8 @@ public class Storage {
     private String filename;
     private JSONObject requestJson;
     private UserJob userJob;
+    private int count;
+    private List<User> listUsers;
 
     public Integer getPersonFirstId() { return personFirstId; }
     public void setPersonFirstId(Integer personFirstId) { this.personFirstId = personFirstId; }
@@ -36,6 +41,12 @@ public class Storage {
     public JSONObject getRequestJson() { return requestJson; }
     public void setRequestJson(JSONObject requestJson) { this.requestJson = requestJson; }
 
-    public UserJob getUser() { return userJob; }
-    public void setUser(UserJob userJob) { this.userJob = userJob; }
+    public UserJob getUserJob() { return userJob; }
+    public void setUserJob(UserJob userJob) { this.userJob = userJob; }
+
+    public int getCount() { return count; }
+    public void setCount(int count) { this.count = count; }
+
+    public List<User> getListUsers() { return listUsers; }
+    public void setListUsers(List<User> listUsers) { this.listUsers = listUsers; }
 }

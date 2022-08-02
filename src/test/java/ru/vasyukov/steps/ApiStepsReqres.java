@@ -5,6 +5,8 @@ import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
+import ru.vasyukov.dtoReqres.ListUsers;
+import ru.vasyukov.dtoReqres.User;
 import ru.vasyukov.dtoReqres.UserJob;
 import ru.vasyukov.properties.TestData;
 
@@ -13,6 +15,8 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import static io.restassured.RestAssured.given;
@@ -20,6 +24,31 @@ import static ru.vasyukov.specifications.Specification.*;
 
 /** Класс тестовых шагов Reqres */
 public class ApiStepsReqres {
+
+    @Step("Запрос всех страниц юзеров, сбор юзеров")
+    public static void queryListUsers(Storage storage) {
+        int numberPage = 1;
+        int count = 0;
+        ListUsers list;
+        List<User> users = new ArrayList<>();
+
+        do {
+            list = given()
+                    .spec(requestSpecReqres())
+                    .queryParam("page", numberPage)
+                    .when()
+                    .get(TestData.application.apiUsers())
+                    .then()
+                    .log().body()
+                    .spec(responseSpecCheckListUsers())
+                    .extract().body().as(ListUsers.class);
+            numberPage++;
+            users.addAll(list.getData());
+            count = list.getTotal();
+        } while (numberPage <= list.getTotal_pages());
+        storage.setCount(count);
+        storage.setListUsers(users);
+    }
 
     @Step("Создание файла Json для запроса {filename}")
     public static boolean createJsonFile(String filename, String strJson) {
