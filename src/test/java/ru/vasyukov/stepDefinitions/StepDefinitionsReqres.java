@@ -6,6 +6,7 @@ import io.cucumber.java.ru.Дано;
 import io.cucumber.java.ru.И;
 import io.cucumber.java.ru.Когда;
 import io.cucumber.java.ru.Тогда;
+import io.qameta.allure.Step;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import ru.vasyukov.properties.TestData;
@@ -32,6 +33,17 @@ public class StepDefinitionsReqres {
     @Дано("Запрашиваем все страницы юзеров")
     public void readAllUsers() {
         queryListUsers(storage);
+    }
+
+    @Тогда("Проверяем количество юзеров {int}")
+    public void assertCountUsers(int count) {
+        Assertions.assertEquals(count, storage.getCount(),
+                "Количество юзеров не правильно");
+    }
+
+    @И("Проверяем уникальность ID и email юзеров")
+    public void assertIDAndEmail() {
+        assertListUsers(storage.getListUsers());
     }
 
     @Дано("Создаем файл с данными для запроса {string}")

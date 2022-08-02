@@ -18,6 +18,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static io.restassured.RestAssured.given;
 import static ru.vasyukov.specifications.Specification.*;
@@ -28,7 +29,7 @@ public class ApiStepsReqres {
     @Step("Запрос всех страниц юзеров, сбор юзеров")
     public static void queryListUsers(Storage storage) {
         int numberPage = 1;
-        int count = 0;
+        int count;
         ListUsers list;
         List<User> users = new ArrayList<>();
 
@@ -39,7 +40,7 @@ public class ApiStepsReqres {
                     .when()
                     .get(TestData.application.apiUsers())
                     .then()
-                    .log().body()
+                    //.log().body()
                     .spec(responseSpecCheckListUsers())
                     .extract().body().as(ListUsers.class);
             numberPage++;
@@ -48,6 +49,28 @@ public class ApiStepsReqres {
         } while (numberPage <= list.getTotal_pages());
         storage.setCount(count);
         storage.setListUsers(users);
+    }
+
+    @Step("Проверка уникальности ID и email юзеров")
+    public static void assertListUsers(List<User> list) {
+        List<Integer> duplicateID = list.stream()
+                .map(User::getId)
+                .collect(Collectors.toMap(el-> el, el-> 1, (el1,el2)-> el1+1))
+                .entrySet().stream()
+                .filter(el-> el.getValue()>1)
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
+        List<String> duplicateEmail = list.stream()
+                .map(User::getEmail)
+                .collect(Collectors.toMap(el-> el, el-> 1, (el1,el2)-> el1+1))
+                .entrySet().stream()
+                .filter(el-> el.getValue()>1)
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
+        Assertions.assertEquals(0, duplicateID.size(),
+                "Найдены дубликаты ID: " + duplicateID);
+        Assertions.assertEquals(0, duplicateEmail.size(),
+                "Найдены дубликаты Email: " + duplicateEmail);
     }
 
     @Step("Создание файла Json для запроса {filename}")
