@@ -45,9 +45,9 @@ public class StepDefinitionsReqres {
         assertListUsers(storage.getListUsers());
     }
 
-    @Дано("Запрашиваем юзера с ID {int}")
-    public void requestID(int id) {
-        requestForID(storage, id);
+    @Дано("Запрашиваем юзера с ID {int}, статус {int}")
+    public void requestID(int id, int status) {
+        requestForID(storage, id, status);
     }
 
     @Тогда("Проверяем юзера: ID {int}, first_name {string}, last_name {string}")

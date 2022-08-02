@@ -73,9 +73,15 @@ public class Specification {
                 .build();
     }
 
-    public static ResponseSpecification responseSpecCheckUser(){
+    public static ResponseSpecification responseSpecCheckUser(int status){
+        if (status == 404) {
+            return new ResponseSpecBuilder()
+                    .expectStatusCode(status)
+                    .expectBody("size()", is(0))
+                    .build();
+        }
         return new ResponseSpecBuilder()
-                .expectStatusCode(200)
+                .expectStatusCode(status)
                 .expectBody("data", not(emptyArray()))
                 .expectBody("data.size()", is(5))
                 .expectBody("data.id", notNullValue())

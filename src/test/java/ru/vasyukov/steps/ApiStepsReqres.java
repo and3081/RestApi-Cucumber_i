@@ -74,14 +74,14 @@ public class ApiStepsReqres {
                 "Найдены дубликаты Email: " + duplicateEmail);
     }
 
-    public static void requestForID(Storage storage, int id) {
+    public static void requestForID(Storage storage, int id, int status) {
         SingleUser user = given()
                 .spec(requestSpecReqres())
                 .when()
                 .get(TestData.application.apiUsers() + "/" + id)
                 .then()
                 //.log().body()
-                .spec(responseSpecCheckUser())
+                .spec(responseSpecCheckUser(status))
                 .extract().body().as(SingleUser.class);
         storage.setSingleUser(user);
     }
