@@ -6,7 +6,6 @@ import io.cucumber.java.ru.Дано;
 import io.cucumber.java.ru.И;
 import io.cucumber.java.ru.Когда;
 import io.cucumber.java.ru.Тогда;
-import io.qameta.allure.Step;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import ru.vasyukov.properties.TestData;
@@ -44,6 +43,21 @@ public class StepDefinitionsReqres {
     @И("Проверяем уникальность ID и email юзеров")
     public void assertIDAndEmail() {
         assertListUsers(storage.getListUsers());
+    }
+
+    @Дано("Запрашиваем юзера с ID {int}")
+    public void requestID(int id) {
+        requestForID(storage, id);
+    }
+
+    @Тогда("Проверяем юзера: ID {int}, first_name {string}, last_name {string}")
+    public void assertID(int id, String firstName, String lastName) {
+        Assertions.assertEquals(id, storage.getSingleUser().getData().getId(),
+                "Неправильный ID");
+        Assertions.assertEquals(firstName, storage.getSingleUser().getData().getFirst_name(),
+                "Неправильный firstName");
+        Assertions.assertEquals(lastName, storage.getSingleUser().getData().getLast_name(),
+                "Неправильный lastName");
     }
 
     @Дано("Создаем файл с данными для запроса {string}")

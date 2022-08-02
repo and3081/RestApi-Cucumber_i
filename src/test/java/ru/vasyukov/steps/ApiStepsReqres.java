@@ -6,6 +6,7 @@ import io.qameta.allure.Step;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import ru.vasyukov.dtoReqres.ListUsers;
+import ru.vasyukov.dtoReqres.SingleUser;
 import ru.vasyukov.dtoReqres.User;
 import ru.vasyukov.dtoReqres.UserJob;
 import ru.vasyukov.properties.TestData;
@@ -71,6 +72,18 @@ public class ApiStepsReqres {
                 "Найдены дубликаты ID: " + duplicateID);
         Assertions.assertEquals(0, duplicateEmail.size(),
                 "Найдены дубликаты Email: " + duplicateEmail);
+    }
+
+    public static void requestForID(Storage storage, int id) {
+        SingleUser user = given()
+                .spec(requestSpecReqres())
+                .when()
+                .get(TestData.application.apiUsers() + "/" + id)
+                .then()
+                //.log().body()
+                .spec(responseSpecCheckUser())
+                .extract().body().as(SingleUser.class);
+        storage.setSingleUser(user);
     }
 
     @Step("Создание файла Json для запроса {filename}")

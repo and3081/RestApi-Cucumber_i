@@ -73,6 +73,19 @@ public class Specification {
                 .build();
     }
 
+    public static ResponseSpecification responseSpecCheckUser(){
+        return new ResponseSpecBuilder()
+                .expectStatusCode(200)
+                .expectBody("data", not(emptyArray()))
+                .expectBody("data.size()", is(5))
+                .expectBody("data.id", notNullValue())
+                .expectBody("data.email", notNullValue())
+                .expectBody("data.first_name", notNullValue())
+                .expectBody("data.last_name", notNullValue())
+                .expectBody("data.avatar", notNullValue())
+                .build();
+    }
+
     public static ResponseSpecification responseSpecCheckCreate(){
         return new ResponseSpecBuilder()
                 .expectStatusCode(201)
