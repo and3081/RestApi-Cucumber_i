@@ -123,13 +123,22 @@ public class Specification {
                 .build();
     }
 
-    public static ResponseSpecification responseSpecCheckCreate(){
+    public static ResponseSpecification responseSpecCheckJobCreate(){
         return new ResponseSpecBuilder()
                 .expectStatusCode(201)
                 .expectBody("name", notNullValue())
                 .expectBody("job", notNullValue())
                 .expectBody("id", notNullValue())
                 .expectBody("createdAt", notNullValue())
+                .build();
+    }
+
+    public static ResponseSpecification responseSpecCheckJobUpdate(){
+        return new ResponseSpecBuilder()
+                .expectStatusCode(200)
+                .expectBody("name", notNullValue())
+                .expectBody("job", notNullValue())
+                .expectBody("updatedAt", notNullValue())
                 .build();
     }
 }

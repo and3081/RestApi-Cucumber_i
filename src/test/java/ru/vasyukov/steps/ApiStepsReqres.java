@@ -166,8 +166,8 @@ public class ApiStepsReqres {
         return json;
     }
 
-    @Step("Создание юзера {body}")
-    public static UserJob createUser(JSONObject body) {
+    @Step("Создание юзера-job {body}")
+    public static UserJob createUserJob(JSONObject body) {
         return given()
                 .spec(requestSpecReqres())
                 .body(body.toString())
@@ -175,7 +175,7 @@ public class ApiStepsReqres {
                 .post(TestData.application.apiUsers())
                 .then()
                 //.log().body()
-                .spec(responseSpecCheckCreate())
+                .spec(responseSpecCheckJobCreate())
                 .extract().body().as(UserJob.class);
     }
 
@@ -189,6 +189,19 @@ public class ApiStepsReqres {
             Assertions.assertEquals(el.getValue(), mapOut.get(el.getKey()),
                     "В Json разные значения по ключу " + el.getKey());
         }
+    }
+
+    @Step("Изменение юзера-job ID {id}: {body}")
+    public static UserJobUpdate updateCmdUserJob(String cmd, int id, String body) {
+        return given()
+                .spec(requestSpecReqres())
+                .body(body)
+                .when()
+                .request(cmd, TestData.application.apiUsers() + "/" + id)
+                .then()
+                //.log().body()
+                .spec(responseSpecCheckJobUpdate())
+                .extract().body().as(UserJobUpdate.class);
     }
 
     public static JSONObject readJsonFile(String filename) {

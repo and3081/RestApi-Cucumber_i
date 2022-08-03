@@ -9,6 +9,7 @@ import io.cucumber.java.ru.Тогда;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import ru.vasyukov.properties.TestData;
+import ru.vasyukov.steps.ApiStepsReqres;
 import ru.vasyukov.steps.Storage;
 
 import static ru.vasyukov.steps.ApiStepsReqres.*;
@@ -104,13 +105,29 @@ public class StepDefinitionsReqres {
     }
 
     @Когда("Создаем пользователя с данными из файла")
-    public void createUserFromFile() {
-        storage.setUserJob(createUser(storage.getRequestJson()));
+    public void createUserJobFromFile() {
+        storage.setUserJob(createUserJob(storage.getRequestJson()));
     }
 
-    @Тогда("Проверяем json ответа")
-    public void assertResponse() {
+    @Тогда("Проверяем json ответа CREATE")
+    public void assertResponseUserJob() {
         JSONObject jsonOut = new JSONObject(storage.getUserJob());
+        attachJsonAnnotationAllure(jsonOut);
+        assertJsonToJson(storage.getRequestJson(), jsonOut);
+    }
+
+    @Дано("Изменяем {string} пользователя {int} на {string}")
+    public void updateUserJob(String cmd, int id, String jsonString) {
+        if (!cmd.equals("put") && !cmd.equals("patch")) {
+            Assertions.fail("Команда изменения должна быть 'put' или 'patch'");
+        }
+        storage.setRequestJson(new JSONObject(jsonString));
+        storage.setUserJobUpdate(updateCmdUserJob(cmd, id, jsonString));
+    }
+
+    @Тогда("Проверяем json ответа {string}")
+    public void assertResponseUserJobUpdate(String cmd) {
+        JSONObject jsonOut = new JSONObject(storage.getUserJobUpdate());
         attachJsonAnnotationAllure(jsonOut);
         assertJsonToJson(storage.getRequestJson(), jsonOut);
     }

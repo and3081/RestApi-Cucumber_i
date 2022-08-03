@@ -19,6 +19,7 @@ public class Storage {
     private String filename;
     private JSONObject requestJson;
     private UserJob userJob;
+    private UserJobUpdate userJobUpdate;
     private int count;
     private List<User> listUsers;
     private SingleUser singleUser;
@@ -45,6 +46,9 @@ public class Storage {
 
     public UserJob getUserJob() { return userJob; }
     public void setUserJob(UserJob userJob) { this.userJob = userJob; }
+
+    public UserJobUpdate getUserJobUpdate() { return userJobUpdate; }
+    public void setUserJobUpdate(UserJobUpdate userJobUpdate) { this.userJobUpdate = userJobUpdate; }
 
     public int getCount() { return count; }
     public void setCount(int count) { this.count = count; }
