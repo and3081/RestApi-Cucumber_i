@@ -1,9 +1,7 @@
 package ru.vasyukov.steps;
 
 import org.json.JSONObject;
-import ru.vasyukov.dtoReqres.SingleUser;
-import ru.vasyukov.dtoReqres.User;
-import ru.vasyukov.dtoReqres.UserJob;
+import ru.vasyukov.dtoReqres.*;
 import ru.vasyukov.dtoRick.Episode;
 import ru.vasyukov.dtoRick.Person;
 
@@ -24,6 +22,8 @@ public class Storage {
     private int count;
     private List<User> listUsers;
     private SingleUser singleUser;
+    private List<Resource> listResources;
+    private SingleResource singleResource;
 
     public Integer getPersonFirstId() { return personFirstId; }
     public void setPersonFirstId(Integer personFirstId) { this.personFirstId = personFirstId; }
@@ -54,4 +54,10 @@ public class Storage {
 
     public SingleUser getSingleUser() { return singleUser; }
     public void setSingleUser(SingleUser singleUser) { this.singleUser = singleUser; }
+
+    public List<Resource> getListResources() { return listResources; }
+    public void setListResources(List<Resource> listResources) { this.listResources = listResources; }
+
+    public SingleResource getSingleResource() { return singleResource; }
+    public void setSingleResource(SingleResource singleResource) { this.singleResource = singleResource; }
 }

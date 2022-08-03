@@ -5,10 +5,7 @@ import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
-import ru.vasyukov.dtoReqres.ListUsers;
-import ru.vasyukov.dtoReqres.SingleUser;
-import ru.vasyukov.dtoReqres.User;
-import ru.vasyukov.dtoReqres.UserJob;
+import ru.vasyukov.dtoReqres.*;
 import ru.vasyukov.properties.TestData;
 
 import java.io.FileWriter;
@@ -74,7 +71,7 @@ public class ApiStepsReqres {
                 "Найдены дубликаты Email: " + duplicateEmail);
     }
 
-    public static void requestForID(Storage storage, int id, int status) {
+    public static void requestForIDUser(Storage storage, int id, int status) {
         SingleUser user = given()
                 .spec(requestSpecReqres())
                 .when()
@@ -84,6 +81,65 @@ public class ApiStepsReqres {
                 .spec(responseSpecCheckUser(status))
                 .extract().body().as(SingleUser.class);
         storage.setSingleUser(user);
+    }
+
+    @Step("Запрос всех страниц ресурсов, сбор ресурсов")
+    public static void queryListResources(Storage storage) {
+        int numberPage = 1;
+        int count;
+        ListResources list;
+        List<Resource> resources = new ArrayList<>();
+
+        do {
+            list = given()
+                    .spec(requestSpecReqres())
+                    .queryParam("page", numberPage)
+                    .when()
+                    .get(TestData.application.apiResources())
+                    .then()
+                    //.log().body()
+                    .spec(responseSpecCheckListResources())
+                    .extract().body().as(ListResources.class);
+            numberPage++;
+            resources.addAll(list.getData());
+            count = list.getTotal();
+        } while (numberPage <= list.getTotal_pages());
+        storage.setCount(count);
+        storage.setListResources(resources);
+    }
+
+    @Step("Проверка уникальности ID и name ресурсов")
+    public static void assertListResources(List<Resource> list) {
+        List<Integer> duplicateID = list.stream()
+                .map(Resource::getId)
+                .collect(Collectors.toMap(el-> el, el-> 1, (el1,el2)-> el1+1))
+                .entrySet().stream()
+                .filter(el-> el.getValue()>1)
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
+        List<String> duplicateName = list.stream()
+                .map(Resource::getName)
+                .collect(Collectors.toMap(el-> el, el-> 1, (el1,el2)-> el1+1))
+                .entrySet().stream()
+                .filter(el-> el.getValue()>1)
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
+        Assertions.assertEquals(0, duplicateID.size(),
+                "Найдены дубликаты ID: " + duplicateID);
+        Assertions.assertEquals(0, duplicateName.size(),
+                "Найдены дубликаты Name: " + duplicateName);
+    }
+
+    public static void requestForIDResource(Storage storage, int id, int status) {
+        SingleResource resource = given()
+                .spec(requestSpecReqres())
+                .when()
+                .get(TestData.application.apiResources() + "/" + id)
+                .then()
+                //.log().body()
+                .spec(responseSpecCheckResource(status))
+                .extract().body().as(SingleResource.class);
+        storage.setSingleResource(resource);
     }
 
     @Step("Создание файла Json для запроса {filename}")

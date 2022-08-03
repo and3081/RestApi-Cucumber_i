@@ -28,6 +28,9 @@ public interface Application extends Config {
     @Key("api.users")
     String apiUsers();
 
+    @Key("api.resources")
+    String apiResources();
+
     @Key("file.name")
     String filename();
 }

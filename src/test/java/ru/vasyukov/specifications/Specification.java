@@ -92,6 +92,37 @@ public class Specification {
                 .build();
     }
 
+    public static ResponseSpecification responseSpecCheckListResources(){
+        return new ResponseSpecBuilder()
+                .expectStatusCode(200)
+                .expectBody("page", notNullValue())
+                .expectBody("total", notNullValue())
+                .expectBody("total_pages", notNullValue())
+                .expectBody("data", not(emptyArray()))
+                .expectBody("data.id", not(hasItem(nullValue())))
+                .expectBody("data.name", not(hasItem(nullValue())))
+                .build();
+    }
+
+    public static ResponseSpecification responseSpecCheckResource(int status){
+        if (status == 404) {
+            return new ResponseSpecBuilder()
+                    .expectStatusCode(status)
+                    .expectBody("size()", is(0))
+                    .build();
+        }
+        return new ResponseSpecBuilder()
+                .expectStatusCode(status)
+                .expectBody("data", not(emptyArray()))
+                .expectBody("data.size()", is(5))
+                .expectBody("data.id", notNullValue())
+                .expectBody("data.name", notNullValue())
+                .expectBody("data.year", notNullValue())
+                .expectBody("data.color", notNullValue())
+                .expectBody("data.pantone_value", notNullValue())
+                .build();
+    }
+
     public static ResponseSpecification responseSpecCheckCreate(){
         return new ResponseSpecBuilder()
                 .expectStatusCode(201)
