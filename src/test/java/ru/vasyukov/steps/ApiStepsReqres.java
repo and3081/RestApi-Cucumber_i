@@ -38,7 +38,6 @@ public class ApiStepsReqres {
                     .when()
                     .get(TestData.application.apiUsers())
                     .then()
-                    //.log().body()
                     .spec(responseSpecCheckListUsers())
                     .extract().body().as(ListUsers.class);
             numberPage++;
@@ -77,7 +76,6 @@ public class ApiStepsReqres {
                 .when()
                 .get(TestData.application.apiUsers() + "/" + id)
                 .then()
-                //.log().body()
                 .spec(responseSpecCheckUser(status))
                 .extract().body().as(SingleUser.class);
         storage.setSingleUser(user);
@@ -97,7 +95,6 @@ public class ApiStepsReqres {
                     .when()
                     .get(TestData.application.apiResources())
                     .then()
-                    //.log().body()
                     .spec(responseSpecCheckListResources())
                     .extract().body().as(ListResources.class);
             numberPage++;
@@ -136,7 +133,6 @@ public class ApiStepsReqres {
                 .when()
                 .get(TestData.application.apiResources() + "/" + id)
                 .then()
-                //.log().body()
                 .spec(responseSpecCheckResource(status))
                 .extract().body().as(SingleResource.class);
         storage.setSingleResource(resource);
@@ -174,7 +170,6 @@ public class ApiStepsReqres {
                 .when()
                 .post(TestData.application.apiUsers())
                 .then()
-                //.log().body()
                 .spec(responseSpecCheckJobCreate())
                 .extract().body().as(UserJob.class);
     }
@@ -199,7 +194,6 @@ public class ApiStepsReqres {
                 .when()
                 .request(cmd, TestData.application.apiUsers() + "/" + id)
                 .then()
-                //.log().body()
                 .spec(responseSpecCheckJobUpdate())
                 .extract().body().as(UserJobUpdate.class);
     }
@@ -210,7 +204,6 @@ public class ApiStepsReqres {
                 .when()
                 .delete(TestData.application.apiUsers() + "/" + id)
                 .then()
-                //.log().body()
                 .spec(responseSpecCheckJobDelete());
     }
 
@@ -221,8 +214,17 @@ public class ApiStepsReqres {
                 .when()
                 .post(TestData.application.apiRegister())
                 .then()
-                //.log().body()
                 .spec(responseSpecCheckRegistrationEmail(status));
+    }
+
+    public static void authorizationEmail(String body, int status) {
+        given()
+                .spec(requestSpecReqres())
+                .body(body)
+                .when()
+                .post(TestData.application.apiLogin())
+                .then()
+                .spec(responseSpecCheckAuthorizationEmail(status));
     }
 
     public static JSONObject readJsonFile(String filename) {

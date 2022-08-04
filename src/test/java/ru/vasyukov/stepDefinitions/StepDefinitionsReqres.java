@@ -136,8 +136,13 @@ public class StepDefinitionsReqres {
         delUserJob(id);
     }
 
-    @Дано("Проверяем запрос {string}, статус {int}")
+    @Дано("Проверяем запрос регистрации {string}, статус {int}")
     public void registration(String jsonString, int status) {
         registrationEmail(jsonString, status);
+    }
+
+    @Дано("Проверяем запрос авторизации {string}, статус {int}")
+    public void authorization(String jsonString, int status) {
+        authorizationEmail(jsonString, status);
     }
 }

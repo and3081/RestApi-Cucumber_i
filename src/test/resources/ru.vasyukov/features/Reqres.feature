@@ -45,7 +45,13 @@
     Дано Удаляем пользователя 2
 
   Сценарий: Проверка REGISTER - SUCCESSFUL
-    Дано Проверяем запрос '{"email": "eve.holt@reqres.in", "password": "pistol"}', статус 200
+    Дано Проверяем запрос регистрации '{"email": "eve.holt@reqres.in", "password": "pistol"}', статус 200
 
   Сценарий: Проверка REGISTER - UNSUCCESSFUL
-    Дано Проверяем запрос '{"email": "sydney@fife"}', статус 400
+    Дано Проверяем запрос регистрации '{"email": "sydney@fife"}', статус 400
+
+  Сценарий: Проверка LOGIN - SUCCESSFUL
+    Дано Проверяем запрос авторизации '{"email": "eve.holt@reqres.in", "password": "cityslicka"}', статус 200
+
+  Сценарий: Проверка LOGIN - UNSUCCESSFUL
+    Дано Проверяем запрос авторизации '{"email": "sydney@fife"}', статус 400

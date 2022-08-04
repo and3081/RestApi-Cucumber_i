@@ -164,4 +164,20 @@ public class Specification {
                 .expectBody("token", not(emptyOrNullString()))
                 .build();
     }
+
+    public static ResponseSpecification responseSpecCheckAuthorizationEmail(int status){
+        if (status == 400) {
+            return new ResponseSpecBuilder()
+                    .expectStatusCode(status)
+                    .expectBody("size()", is(1))
+                    .expectBody("error", notNullValue())
+                    .expectBody("error", is("Missing password"))
+                    .build();
+        }
+        return new ResponseSpecBuilder()
+                .expectStatusCode(200)
+                .expectBody("size()", is(1))
+                .expectBody("token", not(emptyOrNullString()))
+                .build();
+    }
 }
