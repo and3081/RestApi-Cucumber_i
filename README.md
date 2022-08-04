@@ -29,11 +29,18 @@ mvn allure:serve
   * Сверяем расу и локацию персонажа1 и персонажа2:
     * Раса должна быть одинакова
     * Локация должна быть разной
-### ТК2 - reqres.in
-* Проверка json ответа при создании юзера:
-  * Создаем файл "src/test/resources/myJson.json" с исходными данными:
-    * {"name": "Potato"}
-  * Читаем json из файла, модифицируем json для body запроса:
-    * {"name":"Tomato","job":"Eat maket"}
-  * Создаем пользователя с модифицированным json
-  * Сверяем json ответа с json запроса
+### Чеклист1 - reqres.in
+* Проверка LIST USERS
+* Проверка SINGLE USER
+* Проверка SINGLE USER NOT FOUND
+* Проверка LIST RESOURCE
+* Проверка SINGLE RESOURCE
+* Проверка SINGLE RESOURCE NOT FOUND
+* Проверка User Job CREATE
+* Проверка User Job UPDATE PUT
+* Проверка User Job UPDATE PATCH
+* Проверка User Job DELETE
+* Проверка REGISTER - SUCCESSFUL
+* Проверка REGISTER - UNSUCCESSFUL
+* Проверка LOGIN - SUCCESSFUL
+* Проверка LOGIN - UNSUCCESSFUL
