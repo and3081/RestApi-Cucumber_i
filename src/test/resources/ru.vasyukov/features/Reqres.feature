@@ -40,3 +40,12 @@
   Сценарий: Проверка User Job UPDATE PATCH
     Дано Изменяем 'patch' пользователя 2 на '{"name": "Potato", "job": "Developer"}'
     Тогда Проверяем json ответа 'patch'
+
+  Сценарий: Проверка User Job DELETE
+    Дано Удаляем пользователя 2
+
+  Сценарий: Проверка REGISTER - SUCCESSFUL
+    Дано Проверяем запрос '{"email": "eve.holt@reqres.in", "password": "pistol"}', статус 200
+
+  Сценарий: Проверка REGISTER - UNSUCCESSFUL
+    Дано Проверяем запрос '{"email": "sydney@fife"}', статус 400

@@ -9,7 +9,6 @@ import io.cucumber.java.ru.Тогда;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import ru.vasyukov.properties.TestData;
-import ru.vasyukov.steps.ApiStepsReqres;
 import ru.vasyukov.steps.Storage;
 
 import static ru.vasyukov.steps.ApiStepsReqres.*;
@@ -130,5 +129,15 @@ public class StepDefinitionsReqres {
         JSONObject jsonOut = new JSONObject(storage.getUserJobUpdate());
         attachJsonAnnotationAllure(jsonOut);
         assertJsonToJson(storage.getRequestJson(), jsonOut);
+    }
+
+    @Дано("Удаляем пользователя {int}")
+    public void deleteUserJob(int id) {
+        delUserJob(id);
+    }
+
+    @Дано("Проверяем запрос {string}, статус {int}")
+    public void registration(String jsonString, int status) {
+        registrationEmail(jsonString, status);
     }
 }

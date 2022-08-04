@@ -204,6 +204,27 @@ public class ApiStepsReqres {
                 .extract().body().as(UserJobUpdate.class);
     }
 
+    public static void delUserJob(int id) {
+        given()
+                .spec(requestSpecReqres())
+                .when()
+                .delete(TestData.application.apiUsers() + "/" + id)
+                .then()
+                //.log().body()
+                .spec(responseSpecCheckJobDelete());
+    }
+
+    public static void registrationEmail(String body, int status) {
+        given()
+                .spec(requestSpecReqres())
+                .body(body)
+                .when()
+                .post(TestData.application.apiRegister())
+                .then()
+                //.log().body()
+                .spec(responseSpecCheckRegistrationEmail(status));
+    }
+
     public static JSONObject readJsonFile(String filename) {
         try {
             return new JSONObject(new String(Files.readAllBytes(Paths.get(filename))));

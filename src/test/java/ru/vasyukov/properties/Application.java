@@ -31,6 +31,9 @@ public interface Application extends Config {
     @Key("api.resources")
     String apiResources();
 
+    @Key("api.register")
+    String apiRegister();
+
     @Key("file.name")
     String filename();
 }

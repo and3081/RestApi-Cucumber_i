@@ -141,4 +141,27 @@ public class Specification {
                 .expectBody("updatedAt", notNullValue())
                 .build();
     }
+
+    public static ResponseSpecification responseSpecCheckJobDelete(){
+        return new ResponseSpecBuilder()
+                .expectStatusCode(204)
+                .build();
+    }
+
+    public static ResponseSpecification responseSpecCheckRegistrationEmail(int status){
+        if (status == 400) {
+            return new ResponseSpecBuilder()
+                    .expectStatusCode(status)
+                    .expectBody("size()", is(1))
+                    .expectBody("error", notNullValue())
+                    .expectBody("error", is("Missing password"))
+                    .build();
+        }
+        return new ResponseSpecBuilder()
+                .expectStatusCode(200)
+                .expectBody("size()", is(2))
+                .expectBody("id", notNullValue())
+                .expectBody("token", not(emptyOrNullString()))
+                .build();
+    }
 }
