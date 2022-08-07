@@ -5,16 +5,16 @@
 * Allure
 
 ## запуск всех тестов
-mvn clean test
+`mvn clean test`
 
 ## запуск тестов по тегам
-задаются в классе RunnerTest в опции tags, например:
-* tags = "@AllTests"
-* tags = "@TestsRick"
-* tags = "@TestsReqres"
+`mvn clean test -D"cucumber.filter.tags=@тег or @тег"`<br>
+_или_<br>
+теги задаются в классе RunnerTest в опции tags:<br>
+`tags = "@тег or @тег"`
 
 ## построение отчета Allure
-mvn allure:serve
+`mvn allure:serve`
 
 ## настройки в проперти:
 * application.properties - настройки url и endpoints сайтов, параметризация тестов
