@@ -16,12 +16,12 @@ import static ru.vasyukov.steps.ApiStepsRick.*;
 public class StepDefinitionsRick {
     public Storage storage;
 
-    @Before
+    @Before("@TestsRick")
     public void createStorage() {
         storage = new Storage();
     }
 
-    @After
+    @After("@TestsRick")
     public void dropStorage() {
         if (storage != null) {
             storage = null;

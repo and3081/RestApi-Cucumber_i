@@ -2,6 +2,7 @@ package ru.vasyukov.stepDefinitions;
 
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
+import io.cucumber.java.Scenario;
 import io.cucumber.java.ru.Дано;
 import io.cucumber.java.ru.И;
 import io.cucumber.java.ru.Когда;
@@ -17,12 +18,12 @@ import static ru.vasyukov.steps.ApiStepsReqres.*;
 public class StepDefinitionsReqres {
     public Storage storage;
 
-    @Before
+    @Before("@TestsReqres")
     public void createStorage() {
         storage = new Storage();
     }
 
-    @After
+    @After("@TestsReqres")
     public void dropStorage() {
         if (storage != null) {
             storage = null;
