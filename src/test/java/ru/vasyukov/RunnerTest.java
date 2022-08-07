@@ -14,6 +14,6 @@ import org.junit.runner.RunWith;
         glue = {"ru.vasyukov.stepDefinitions"},
         plugin={"pretty", "io.qameta.allure.cucumber6jvm.AllureCucumber6Jvm"},
 //                "json:target/cucumber.json", "html:target/test-output"},
-        tags = "@AllTests"
+        tags = "@ReqresLogin"
 )
 public class RunnerTest {}
